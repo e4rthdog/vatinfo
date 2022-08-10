@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-header elevated class="bg-primary text-white" height-hint="98">
+    <q-header elevated class="bg-primary text-white shadow-5" height-hint="98">
       <q-toolbar>
         <q-toolbar-title class="text-weight-thin text-h5 text-center"
           >VATINFO Panels</q-toolbar-title
