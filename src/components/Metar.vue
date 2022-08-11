@@ -42,13 +42,8 @@ function clearMetars() {
     <q-card-section>
       <div class="row items-center">
         <div class="col-12 col-lg-5">
-          <q-input
-            id="txtMetar"
-            @keypress.enter="updatePanel()"
-            color="positive"
-            v-model.trim="txtICAO"
-            label="Airport ICAO"
-          >
+          <q-input id="txtMetar" @keypress.enter="updatePanel()" color="positive" v-model.trim="txtICAO"
+            label="Airport ICAO">
             <template v-slot:prepend>
               <q-icon name="flight_takeoff" />
             </template>
@@ -57,12 +52,7 @@ function clearMetars() {
         <div class="col-12 col-lg-7">
           <q-btn-group rounded class="q-ma-md">
             <q-btn @click="updatePanel()" label="Get it" color="primary" />
-            <q-btn
-              @click="refreshAllMetars()"
-              icon-right="update"
-              label="Refresh"
-              color="info"
-            />
+            <q-btn @click="refreshAllMetars()" icon-right="update" label="Refresh" color="info" />
             <q-btn @click="clearMetars()" label="Clear" color="negative" />
           </q-btn-group>
         </div>
