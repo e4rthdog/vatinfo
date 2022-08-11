@@ -28,7 +28,5 @@
 </template>
 
 <script setup>
-// import { refs } from 'vue'
-// console.log(this.$refs);
 
 </script>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, inject } from "vue";
+import { ref, inject } from "vue";
 import { date } from "quasar";
 
 const cfg = inject("appConfig");

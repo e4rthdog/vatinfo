@@ -42,7 +42,7 @@ function updateTime() {
 }
 
 async function updateData() {
-  $q.loading.show({ message: "Fetching Data ...", spinner: QSpinnerGears })
+  $q.loading.show({ message: "Fetching Events & CIDs ...", spinner: QSpinnerGears })
   await eventsRef.value.getEvents();
   await friendsRef.value.getOnlineCids();
   await metarRef.value.refreshAllMetars();
