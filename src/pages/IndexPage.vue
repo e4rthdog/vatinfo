@@ -14,16 +14,16 @@
         <metar ref="metarRef"></metar>
       </div>
     </div>
-    <q-page-sticky position="bottom-right" :offset="[18, 18]" class="text-center">
-      <p style="font-size:0.7rem;">Last Refresh: {{ lastRefresh }}</p>
-      <q-btn @click="updateData()" fab icon="update" color="positive" label="Refresh All" />
+    <q-page-sticky position="top-right" :offset="[18, 18]" class="text-center">
+      <p class="q-mb-xs text-weight-bold " style="font-size:0.7rem;">Last Refresh: {{ lastRefresh }}</p>
+      <q-btn @click="updateData()" icon="update" color="positive" label="Refresh All" size="md" />
     </q-page-sticky>
   </q-page>
 </template>
 
 <script setup>
-import { QSpinnerGears, QSpinnerPie, useQuasar, date } from "quasar";
-import { inject, ref, onMounted } from "vue";
+import { QSpinnerGears, useQuasar, date } from "quasar";
+import { inject, ref, onMounted, provide } from "vue";
 import Events from "components/Events.vue";
 import Friends from "components/Friends.vue";
 import Metar from "components/Metar.vue";
@@ -46,6 +46,8 @@ async function updateData() {
   updateTime();
   $q.loading.hide();
 }
+
+provide('updateData', updateData);
 
 onMounted(() => {
   updateData();
