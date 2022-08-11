@@ -19,7 +19,7 @@ defineExpose({ getOnlineCids });
 </script>
 
 <template>
-  <q-card>
+  <q-card style="height: 100%">
     <q-card-section class="bg-primary text-white">
       <q-icon name="people" size="1.5rem" class="q-mr-sm" />
       <span>Online CIDs</span>
@@ -37,7 +37,13 @@ defineExpose({ getOnlineCids });
 
         <tbody v-for="(f, index) in onlineCIDS" :key="index">
           <tr v-if="f.callsign">
-            <td v-html="cfg.status[f.clienttype]"></td>
+            <td>
+              <q-badge class="q-pa-xs" color="green">
+                <q-icon :name="cfg.status[f.clienttype]" class="q-mr-xs" />{{
+                  f.clienttype
+                }}</q-badge
+              >
+            </td>
             <td>{{ f.realname }}</td>
             <td>{{ f.callsign }}</td>
           </tr>

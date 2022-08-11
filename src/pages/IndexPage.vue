@@ -1,11 +1,17 @@
 <template>
-  <q-page class="q-ma-md justify-evenly">
-    <div class="row justify-evenly">
+  <q-page class="q-ma-md">
+    <div class="row">
       <div class="col-12 col-md-5 q-ma-sm">
         <events ref="eventsRef"></events>
       </div>
       <div class="col-12 col-md-5 q-ma-sm">
         <friends ref="friendsRef"></friends>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-5 q-ma-sm">
+        <metar ref="metarRef"></metar>
       </div>
     </div>
   </q-page>
@@ -16,6 +22,7 @@ import { useQuasar } from "quasar";
 import { inject, ref, onMounted } from "vue";
 import Events from "components/Events.vue";
 import Friends from "components/Friends.vue";
+import Metar from "components/Metar.vue";
 
 async function updateData() {
   await eventsRef.value.getEvents();
@@ -33,4 +40,5 @@ const cfg = inject("appConfig");
 const $q = useQuasar();
 const eventsRef = ref();
 const friendsRef = ref();
+const metarRef = ref();
 </script>
