@@ -1,5 +1,9 @@
 <template>
   <q-page class="q-ma-md">
+    <div class="row q-ma-none">
+      <q-space></q-space>
+      <p style="font-size:0.8rem;">Last Refresh: {{ lastRefresh }}</p>
+    </div>
     <div class="row">
       <div class="col-12 col-md-5 q-ma-sm">
         <events ref="eventsRef"></events>
@@ -15,8 +19,6 @@
       </div>
     </div>
     <q-page-sticky position="top-right" :offset="[18, 18]" class="text-center">
-      <p class="q-mb-xs text-weight-bold " style="font-size:0.7rem;">Last Refresh: {{ lastRefresh }}</p>
-      <q-btn @click="updateData()" icon="update" color="positive" label="Refresh All" size="md" />
     </q-page-sticky>
   </q-page>
 </template>
@@ -43,6 +45,7 @@ async function updateData() {
   $q.loading.show({ message: "Fetching Data ...", spinner: QSpinnerGears })
   await eventsRef.value.getEvents();
   await friendsRef.value.getOnlineCids();
+  await metarRef.value.refreshAllMetars();
   updateTime();
   $q.loading.hide();
 }

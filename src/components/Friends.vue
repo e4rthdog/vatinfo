@@ -1,12 +1,13 @@
 <script setup>
 import { ref, inject } from "vue";
+import { date } from "quasar";
 
 const cfg = inject("appConfig");
 const onlineCIDS = ref([]);
 
 async function getOnlineCids() {
 
-  await fetch(cfg.cidsURL + cfg.friendsCID)
+  await fetch(cfg.cidsURL + cfg.friendsCID + '&nonce=' + date.formatDate(Date.now(), 'YYMMDDHHmmssSS'))
     .then((ret) => ret.json())
     .then((data) => {
       onlineCIDS.value = data;

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, inject, onMounted } from "vue";
-import { useQuasar, QSpinnerGears } from "quasar";
+import { useQuasar, QSpinnerGears, date } from "quasar";
 
 const cfg = inject("appConfig");
 const isFetching = ref(false);
@@ -9,7 +9,7 @@ const arrMetars = ref([]);
 const $q = useQuasar();
 
 async function getMetar(icao = txtICAO.value) {
-  return await fetch(cfg.metarURL + icao)
+  return await fetch(cfg.metarURL + icao + '&nonce=' + date.formatDate(Date.now(), 'YYMMDDHHmmssSS'))
     .then((ret) => ret.text())
     .then((m) => {
       return { icao: icao, metar: m };
@@ -32,6 +32,8 @@ function updatePanel() {
 function clearMetars() {
   arrMetars.value = [];
 }
+
+defineExpose({ refreshAllMetars })
 </script>
 
 <template>
@@ -60,7 +62,7 @@ function clearMetars() {
           </q-btn-group>
         </div>
       </div>
-      <div class="row">
+      <div class="row bg-yellow-1 shadow-up-1">
         <div class="col-12" v-for="(m, index) in arrMetars" :key="index">
           <q-list dense>
             <q-item>

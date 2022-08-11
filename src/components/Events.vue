@@ -12,7 +12,7 @@ function eventAirports(e) {
 }
 
 async function getEvents() {
-  await fetch(cfg.eventsURL)
+  await fetch(cfg.eventsURL + '?nonce=' + date.formatDate(Date.now(), 'YYMMDDHHmmssSS'))
     .then((ret) => ret.json())
     .then((json) => {
       todaysEvents.value = json.data.filter((e) =>
