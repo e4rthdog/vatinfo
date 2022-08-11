@@ -50,10 +50,11 @@ function clearMetars() {
           </q-input>
         </div>
         <div class="col-12 col-lg-7">
-          <q-btn-group rounded class="q-ma-md">
-            <q-btn @click="updatePanel()" label="Get it" color="primary" />
-            <q-btn @click="refreshAllMetars()" icon-right="update" label="Refresh" color="info" />
-            <q-btn @click="clearMetars()" label="Clear" color="negative" />
+          <q-btn-group rounded push :stretch="false" class="q-ma-md">
+            <q-btn @click="updatePanel()" label="Get it" color="primary" style="font-size:0.8rem" />
+            <q-btn @click="refreshAllMetars()" icon-right="update" label="Refresh" color="info"
+              style="font-size:0.8rem" />
+            <q-btn @click="clearMetars()" label="Clear" color="negative" style="font-size:0.8rem" />
           </q-btn-group>
         </div>
       </div>

@@ -1,10 +1,9 @@
 <script setup>
 import { ref, onMounted, inject } from "vue";
-import moment from "moment";
+import { date } from "quasar";
 
 const cfg = inject("appConfig");
 const todaysEvents = ref([]);
-const isFetching = ref(false);
 
 function eventAirports(e) {
   let airports = "";
@@ -13,15 +12,13 @@ function eventAirports(e) {
 }
 
 async function getEvents() {
-  isFetching.value = true;
   await fetch(cfg.eventsURL)
     .then((ret) => ret.json())
     .then((json) => {
       todaysEvents.value = json.data.filter((e) =>
-        moment(new Date()).isSame(e.start_time, "days")
+        date.getDateDiff(Date.now(), e.start_time, "days") == 0 ? true : false
       );
     });
-  isFetching.value = false;
 }
 
 defineExpose({ getEvents });
@@ -50,8 +47,8 @@ defineExpose({ getEvents });
             <td class="text-left">
               <a :href="e.link" target="_blank">{{ e.name }}</a>
             </td>
-            <td>{{ moment(new Date(e.start_time)).format("HH:mm") }}</td>
-            <td>{{ moment(new Date(e.end_time)).format("HH:mm") }}</td>
+            <td>{{ date.formatDate(new Date(e.start_time), "HH:mm") }}</td>
+            <td>{{ date.formatDate(new Date(e.end_time), "HH:mm") }}</td>
             <td>{{ eventAirports(e) }}</td>
           </tr>
         </tbody>
