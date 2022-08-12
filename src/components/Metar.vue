@@ -62,7 +62,7 @@ defineExpose({ refreshAllMetars })
           </q-btn-group>
         </div>
       </div>
-      <div class="row bg-yellow-1 shadow-up-1">
+      <div class="row bg-yellow-1 shadow-up-1 q-mt-md" style="font-size:0.8rem;">
         <div class="col-12" v-for="(m, index) in arrMetars" :key="index">
           <q-list dense>
             <q-item>

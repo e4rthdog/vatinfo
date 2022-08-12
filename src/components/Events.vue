@@ -45,7 +45,9 @@ defineExpose({ getEvents });
         <tbody>
           <tr v-for="(e, index) in todaysEvents" :key="index">
             <td class="text-left">
-              <a :href="e.link" target="_blank">{{ e.name }}</a>
+              <a class="link-no-decoration text-black" :href="e.link" target="_blank">{{ e.name }}
+                <q-icon name="open_in_new" />
+              </a>
             </td>
             <td>{{ date.formatDate(new Date(e.start_time), "HH:mm") }}</td>
             <td>{{ date.formatDate(new Date(e.end_time), "HH:mm") }}</td>

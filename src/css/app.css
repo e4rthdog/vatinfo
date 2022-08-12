@@ -3,3 +3,8 @@
 .footer-text {
   font-size: 0.8rem;
 }
+
+.link-no-decoration {
+  text-decoration: none;
+  font-weight: 600;
+}
