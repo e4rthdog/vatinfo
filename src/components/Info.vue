@@ -73,15 +73,11 @@ const tabName = ref('ctr');
 
 
 const totalCTR = computed(() => {
-  let res = allClients.value.filter((c) => c.callsign.includes('CTR'))
-  res.forEach((c) => c.time_logon_str = `${c.time_logon.slice(8, 10)}:${c.time_logon.slice(10, 12)}z`);
-  return res.sort((a, b) => (a.callsign > b.callsign) ? 1 : -1);
+  return createTypeArray('CTR');
 });
 
 const totalAPP = computed(() => {
-  let res = allClients.value.filter((c) => c.callsign.includes('APP'))
-  res.forEach((c) => c.time_logon_str = `${c.time_logon.slice(8, 10)}:${c.time_logon.slice(10, 12)}z`);
-  return res.sort((a, b) => (a.callsign > b.callsign) ? 1 : -1);
+  return createTypeArray('APP');
 });
 
 const totalByType = computed(() => {
@@ -91,5 +87,11 @@ const totalByType = computed(() => {
   });
   return res;
 })
+
+function createTypeArray(type) {
+  let res = allClients.value.filter((c) => c.callsign.includes(type))
+  res.forEach((c) => c.time_logon_str = `${c.time_logon.slice(8, 10)}:${c.time_logon.slice(10, 12)}z`);
+  return res.sort((a, b) => (a.callsign > b.callsign) ? 1 : -1);
+}
 
 </script>
