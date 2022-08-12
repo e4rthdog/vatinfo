@@ -17,11 +17,9 @@ async function getMetar(icao = txtICAO.value) {
 }
 
 async function refreshAllMetars() {
-  $q.loading.show({ message: "Refreshing METARs ...", spinner: QSpinnerGears })
   for await (const m of arrMetars.value) {
     await getMetar(m.icao).then((d) => (m.metar = d.metar));
   }
-  $q.loading.hide();
 }
 
 function updatePanel() {

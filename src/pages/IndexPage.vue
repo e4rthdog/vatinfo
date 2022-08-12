@@ -17,6 +17,9 @@
       <div class="col-12 col-md-5 q-ma-sm">
         <metar ref="metarRef"></metar>
       </div>
+      <div class="col-12 col-md-5 q-ma-sm">
+        <info ref="infoRef"></info>
+      </div>
     </div>
     <q-page-sticky position="top-right" :offset="[18, 18]" class="text-center">
     </q-page-sticky>
@@ -29,33 +32,47 @@ import { inject, ref, onMounted, provide } from "vue";
 import Events from "components/Events.vue";
 import Friends from "components/Friends.vue";
 import Metar from "components/Metar.vue";
+import Info from "components/Info.vue"
 
 const cfg = inject("appConfig");
 const $q = useQuasar();
 const eventsRef = ref();
 const friendsRef = ref();
 const metarRef = ref();
+const infoRef = ref();
 const lastRefresh = ref();
+const soulis = ref('bla bla bla');
+const allClients = ref([]);
 
-function updateTime() {
-  lastRefresh.value = date.formatDate(Date.now(), 'HH:mm')
-}
+
+provide('updateData', updateData);
+provide('allClients', allClients)
 
 async function updateData() {
-  $q.loading.show({ message: "Fetching Events & CIDs ...", spinner: QSpinnerGears })
+  $q.loading.show({ message: "Fetching Events,CIDs ...", spinner: QSpinnerGears })
   await eventsRef.value.getEvents();
   await friendsRef.value.getOnlineCids();
+  $q.loading.show({ message: "Refreshing METARs ...", spinner: QSpinnerGears })
   await metarRef.value.refreshAllMetars();
+  $q.loading.show({ message: "Refreshing INFO ...", spinner: QSpinnerGears })
+  await getClients();
   updateTime();
   $q.loading.hide();
 }
 
-provide('updateData', updateData);
-
+async function getClients() {
+  await fetch(cfg.clientsURL + '&' + date.formatDate(Date.now(), 'YYMMDDHHmmssSS'))
+    .then((ret) => ret.json())
+    .then((m) => allClients.value = m);
+}
 onMounted(() => {
   updateData();
   setInterval(updateData, cfg.refreshInterval);
 });
+
+function updateTime() {
+  lastRefresh.value = date.formatDate(Date.now(), 'HH:mm')
+}
 
 defineExpose({ updateData });
 
