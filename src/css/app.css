@@ -1,0 +1,21 @@
+/* open-sans-regular - latin */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/open-sans-v29-latin-regular.eot"); /* IE9 Compat Modes */
+  src: local(""), url("../fonts/open-sans-v29-latin-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/open-sans-v29-latin-regular.woff2") format("woff2"), url("../fonts/open-sans-v29-latin-regular.woff") format("woff"), url("../fonts/open-sans-v29-latin-regular.ttf") format("truetype"), url("../fonts/open-sans-v29-latin-regular.svg#OpenSans") format("svg"); /* Legacy iOS */
+}
+* {
+  font-family: "Open Sans";
+}
+
+.footer-text {
+  font-size: 0.7rem;
+}
+
+.link-no-decoration {
+  text-decoration: none;
+  color: #21BA45 !important;
+  font-weight: 600;
+}/*# sourceMappingURL=app.css.map */
