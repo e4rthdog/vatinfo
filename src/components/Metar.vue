@@ -9,7 +9,7 @@ const arrMetars = ref([]);
 const arrMetarsSorted = computed(() => arrMetars.value.sort((a, b) => (a.icao > b.icao) ? 1 : -1));
 const $q = useQuasar();
 
-async function getMetar(icao = txtICAO.value) {
+async function getMetar(icao = txtICAO.value.toUpperCase()) {
   return await fetch(cfg.metarURL + icao + '&nonce=' + date.formatDate(Date.now(), 'YYMMDDHHmmssSS'))
     .then((ret) => ret.text())
     .then((m) => {
