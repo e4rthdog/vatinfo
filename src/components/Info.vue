@@ -29,12 +29,14 @@
             <thead>
               <tr class="bg-grey-1">
                 <th>Callsign</th>
+                <th>Name</th>
                 <th>Since</th>
               </tr>
             </thead>
             <tbody v-for="(m, index) in totalCTR" :key="index">
               <tr>
                 <td>{{ m.callsign }} </td>
+                <td>{{ m.realname }}</td>
                 <td>{{ m.time_logon_str }}</td>
               </tr>
             </tbody>
@@ -46,12 +48,14 @@
             <thead>
               <tr class="bg-grey-1">
                 <th>Callsign</th>
+                <th>Name</th>
                 <th>Since</th>
               </tr>
             </thead>
             <tbody v-for="(m, index) in totalAPP" :key="index">
               <tr>
                 <td>{{ m.callsign }} </td>
+                <td>{{ m.realname }}</td>
                 <td>{{ m.time_logon_str }}</td>
               </tr>
             </tbody>

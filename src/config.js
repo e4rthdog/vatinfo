@@ -10,7 +10,7 @@ const appConfig = {
   callsignURL: "https://vatboard.estassinos.com/getdata.php?type=CALLSIGN&q=",
   clientsURL: "https://vatboard.estassinos.com/getdata.php?type=ALL",
   friendsCID:
-    "1041728,837997,819311,810670,810309,898093,827599,1463640,1378014",
+    "1041728,837997,819311,810670,810309,898093,827599,1463640,1378014,963239",
   status: {
     PILOT: "flight",
     ATC: "settings_input_antenna",
