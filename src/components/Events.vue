@@ -36,7 +36,7 @@ defineExpose({ getEvents });
       <q-markup-table dense flat wrap-cells class="text-center">
         <thead>
           <tr>
-            <th>Event Name</th>
+            <th class="text-left">Event Name</th>
             <th>Start</th>
             <th>End</th>
             <th>Airports</th>

@@ -29,7 +29,7 @@ defineExpose({ getOnlineCids });
       <q-markup-table dense flat wrap-cells class="text-center">
         <thead>
           <tr>
-            <th>Status</th>
+            <th class="text-left">Status</th>
             <th>Name</th>
             <th>Info</th>
           </tr>
@@ -37,7 +37,7 @@ defineExpose({ getOnlineCids });
 
         <tbody v-for="(f, index) in onlineCIDS" :key="index">
           <tr v-if="f.callsign">
-            <td>
+            <td class="text-left">
               <q-badge class="q-pa-xs" color="green">
                 <q-icon :name="cfg.status[f.clienttype]" class="q-mr-xs" />{{
                     f.clienttype
