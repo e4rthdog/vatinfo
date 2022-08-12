@@ -5,7 +5,7 @@
       <span>General Info</span>
     </q-card-section>
     <q-separator />
-    <q-card-section>
+    <q-card-section class="q-pa-xs">
       <div class="row justify-center">
         <q-chip dense square color="blue-grey-2" icon="travel_explore">
           Total Clients
@@ -21,45 +21,42 @@
         </q-chip>
       </div>
     </q-card-section>
-    <q-card-section>
-      <div class="row justify-center">
-        <q-tabs no-caps v-model="tabName" dense class="text-black bg-grey-3 full-width" active-color="primary"
-          indicator-color="primary" align="justify" narrow-indicator>
-          <q-tab name="ctr" :label="'Online CTRs - ' + totalCTR.length" />
-          <q-tab name="app" :label="'Online APPs - ' + totalAPP.length" />
-        </q-tabs>
-
-        <q-separator />
-
-        <q-tab-panels v-model="tabName" animated>
-          <q-tab-panel name="ctr">
-            <div class="row shadow-up-1 q-mt-md" style="font-size:0.8rem;max-height:300px;overflow:auto;">
-              <div class="col-12" v-for="(m, index) in totalCTR" :key="index">
-                <q-list dense>
-                  <q-item>
-                    <q-item-section>
-                      {{ m.callsign }} since {{ m.time_logon_str }}
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </div>
-            </div>
-          </q-tab-panel>
-
-          <q-tab-panel name="app">
-            <div class="row shadow-up-1 q-mt-md" style="font-size:0.8rem;max-height:300px;overflow:auto;">
-              <div class="col-12" v-for="(m, index) in totalAPP" :key="index">
-                <q-list dense>
-                  <q-item>
-                    <q-item-section>
-                      {{ m.callsign }} since {{ m.time_logon_str }}
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </div>
-            </div>
-          </q-tab-panel>
-        </q-tab-panels>
+    <q-card-section class="q-pa-xs">
+      <div class="row" style="max-height:400px;overflow:auto;">
+        <div class="col-12 col-lg-6 q-pa-sm">
+          <p class="text-center q-ma-sm">CTRs Online ({{ totalCTR.length }})</p>
+          <q-markup-table bordered dense flat wrap-cells class="full-width text-left">
+            <thead>
+              <tr class="bg-grey-1">
+                <th>Callsign</th>
+                <th>Since</th>
+              </tr>
+            </thead>
+            <tbody v-for="(m, index) in totalCTR" :key="index">
+              <tr>
+                <td>{{ m.callsign }} </td>
+                <td>{{ m.time_logon_str }}</td>
+              </tr>
+            </tbody>
+          </q-markup-table>
+        </div>
+        <div class="col-12 col-lg-6 q-pa-sm">
+          <p class="text-center q-ma-sm">APPs Online ({{ totalAPP.length }})</p>
+          <q-markup-table bordered dense flat wrap-cells class="full-width text-left">
+            <thead>
+              <tr class="bg-grey-1">
+                <th>Callsign</th>
+                <th>Since</th>
+              </tr>
+            </thead>
+            <tbody v-for="(m, index) in totalAPP" :key="index">
+              <tr>
+                <td>{{ m.callsign }} </td>
+                <td>{{ m.time_logon_str }}</td>
+              </tr>
+            </tbody>
+          </q-markup-table>
+        </div>
       </div>
     </q-card-section>
   </q-card>

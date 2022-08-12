@@ -26,9 +26,9 @@ defineExpose({ getOnlineCids });
     </q-card-section>
     <q-separator />
     <q-card-section>
-      <q-markup-table dense flat wrap-cells class="text-center">
+      <q-markup-table dense flat wrap-cells class="text-center" bordered>
         <thead>
-          <tr>
+          <tr class="bg-grey-1">
             <th class="text-left">Status</th>
             <th>Name</th>
             <th>Info</th>

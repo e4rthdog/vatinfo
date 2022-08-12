@@ -33,9 +33,9 @@ defineExpose({ getEvents });
     </q-card-section>
     <q-separator />
     <q-card-section>
-      <q-markup-table dense flat wrap-cells class="text-center">
+      <q-markup-table bordered dense flat wrap-cells class="text-center">
         <thead>
-          <tr>
+          <tr class="bg-grey-1">
             <th class="text-left">Event Name</th>
             <th>Start(LT)</th>
             <th>End(LT)</th>

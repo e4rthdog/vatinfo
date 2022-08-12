@@ -23,7 +23,7 @@ async function refreshAllMetars() {
 }
 
 function updatePanel() {
-  getMetar().then((d) => arrMetars.value.push(d));
+  getMetar().then((d) => { if (d.metar.trim() != '') arrMetars.value.push(d) });
   txtICAO.value = "";
 }
 
@@ -60,15 +60,20 @@ defineExpose({ refreshAllMetars })
           </q-btn-group>
         </div>
       </div>
-      <div class="row bg-yellow-1 shadow-up-1 q-mt-md" style="font-size:0.8rem;">
-        <div class="col-12" v-for="(m, index) in arrMetars" :key="index">
-          <q-list dense>
-            <q-item>
-              <q-item-section>
-                {{ m.metar }}
-              </q-item-section>
-            </q-item>
-          </q-list>
+      <div class="row bg-yellow-1 q-mt-md" style="font-size:0.8rem;">
+        <div class="col-12">
+          <q-markup-table bordered dense flat wrap-cells class="full-width text-left">
+            <thead class="bg-grey-1">
+              <tr>
+                <th>METAR</th>
+              </tr>
+            </thead>
+            <tbody v-for="(m, index) in arrMetars" :key="index">
+              <tr>
+                <td>{{ m.metar }} </td>
+              </tr>
+            </tbody>
+          </q-markup-table>
         </div>
       </div>
     </q-card-section>
