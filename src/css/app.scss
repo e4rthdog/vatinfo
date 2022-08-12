@@ -1,0 +1,12 @@
+// $
+@import "../../node_modules/quasar/src/css/variables.sass";
+
+.footer-text {
+  font-size: 0.7rem;
+}
+
+.link-no-decoration {
+  text-decoration: none;
+  color: $positive !important;
+  font-weight: 600;
+}
