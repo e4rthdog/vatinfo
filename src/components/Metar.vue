@@ -77,7 +77,7 @@ defineExpose({ refreshAllMetars })
             </thead>
             <tbody>
               <tr v-for="(m, index) in arrMetarsSorted" :key="index">
-                <td class="footer-text">{{ m.metar }} </td>
+                <td>{{ m.metar }} </td>
               </tr>
             </tbody>
           </q-markup-table>

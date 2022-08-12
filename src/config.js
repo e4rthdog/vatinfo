@@ -15,7 +15,7 @@ const appConfig = {
     PILOT: "flight",
     ATC: "settings_input_antenna",
   },
-  metarList: ["LGAV", "VQPR", "ENBR", "KDCA", "NZWN", "LYTV"],
+  metarList: ["LGAV", "VQPR", "ENBR", "KDCA", "NZWN", "LYTV", "LPMA"],
   refreshInterval: 15 * 60 * 1000,
 };
 
