@@ -33,8 +33,8 @@
                 <th>Since</th>
               </tr>
             </thead>
-            <tbody v-for="(m, index) in totalCTR" :key="index">
-              <tr>
+            <tbody>
+              <tr v-for="(m, index) in totalCTR" :key="index">
                 <td>{{ m.callsign }} </td>
                 <td>{{ m.realname }}</td>
                 <td>{{ m.time_logon_str }}</td>
@@ -52,8 +52,8 @@
                 <th>Since</th>
               </tr>
             </thead>
-            <tbody v-for="(m, index) in totalAPP" :key="index">
-              <tr>
+            <tbody>
+              <tr v-for="(m, index) in totalAPP" :key="index">
                 <td>{{ m.callsign }} </td>
                 <td>{{ m.realname }}</td>
                 <td>{{ m.time_logon_str }}</td>

@@ -68,8 +68,8 @@ defineExpose({ refreshAllMetars })
                 <th>METAR</th>
               </tr>
             </thead>
-            <tbody v-for="(m, index) in arrMetars" :key="index">
-              <tr>
+            <tbody>
+              <tr v-for="(m, index) in arrMetars" :key="index">
                 <td>{{ m.metar }} </td>
               </tr>
             </tbody>
