@@ -1,11 +1,12 @@
 <script setup>
-import { ref, inject, onMounted } from "vue";
+import { ref, inject, onMounted, computed } from "vue";
 import { useQuasar, QSpinnerGears, date } from "quasar";
 
 const cfg = inject("appConfig");
 const isFetching = ref(false);
 const txtICAO = ref("");
 const arrMetars = ref([]);
+const arrMetarsSorted = computed(() => arrMetars.value.sort((a, b) => (a.icao > b.icao) ? 1 : -1));
 const $q = useQuasar();
 
 async function getMetar(icao = txtICAO.value) {
@@ -30,6 +31,12 @@ function updatePanel() {
 function clearMetars() {
   arrMetars.value = [];
 }
+
+onMounted(() => {
+  cfg.metarList.forEach(m => {
+    getMetar(m).then((d) => { if (d.metar.trim() != '') arrMetars.value.push(d) });
+  });
+});
 
 defineExpose({ refreshAllMetars })
 </script>
@@ -69,8 +76,8 @@ defineExpose({ refreshAllMetars })
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(m, index) in arrMetars" :key="index">
-                <td>{{ m.metar }} </td>
+              <tr v-for="(m, index) in arrMetarsSorted" :key="index">
+                <td class="footer-text">{{ m.metar }} </td>
               </tr>
             </tbody>
           </q-markup-table>
