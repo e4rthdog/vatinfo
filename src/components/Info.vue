@@ -33,7 +33,7 @@
 
         <q-tab-panels v-model="tabName" animated>
           <q-tab-panel name="ctr">
-            <div class="row shadow-up-1 q-mt-md" style="font-size:0.8rem;">
+            <div class="row shadow-up-1 q-mt-md" style="font-size:0.8rem;max-height:300px;overflow:auto;">
               <div class="col-12" v-for="(m, index) in totalCTR" :key="index">
                 <q-list dense>
                   <q-item>
@@ -47,7 +47,7 @@
           </q-tab-panel>
 
           <q-tab-panel name="app">
-            <div class="row shadow-up-1 q-mt-md" style="font-size:0.8rem;">
+            <div class="row shadow-up-1 q-mt-md" style="font-size:0.8rem;max-height:300px;overflow:auto;">
               <div class="col-12" v-for="(m, index) in totalAPP" :key="index">
                 <q-list dense>
                   <q-item>

@@ -32,6 +32,7 @@ defineExpose({ getOnlineCids });
             <th class="text-left">Status</th>
             <th>Name</th>
             <th>Info</th>
+            <th>Since</th>
           </tr>
         </thead>
 
@@ -46,6 +47,7 @@ defineExpose({ getOnlineCids });
             </td>
             <td>{{ f.realname }}</td>
             <td>{{ f.callsign }}</td>
+            <td v-html="`${f.time_logon.slice(8, 10)}:${f.time_logon.slice(10, 12)}z`"></td>
           </tr>
         </tbody>
       </q-markup-table>
