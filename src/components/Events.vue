@@ -37,8 +37,8 @@ defineExpose({ getEvents });
         <thead>
           <tr>
             <th class="text-left">Event Name</th>
-            <th>Start</th>
-            <th>End</th>
+            <th>Start(LT)</th>
+            <th>End(LT)</th>
             <th>Airports</th>
           </tr>
         </thead>
