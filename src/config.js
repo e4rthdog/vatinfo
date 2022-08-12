@@ -15,7 +15,7 @@ const appConfig = {
     PILOT: "flight",
     ATC: "settings_input_antenna",
   },
-  refreshInterval: 1000000,
+  refreshInterval: 15 * 60 * 1000,
 };
 
 export default appConfig;

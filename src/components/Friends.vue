@@ -6,13 +6,16 @@ const cfg = inject("appConfig");
 const onlineCIDS = ref([]);
 
 async function getOnlineCids() {
-
-  await fetch(cfg.cidsURL + cfg.friendsCID + '&nonce=' + date.formatDate(Date.now(), 'YYMMDDHHmmssSS'))
+  await fetch(
+    cfg.cidsURL +
+    cfg.friendsCID +
+    "&nonce=" +
+    date.formatDate(Date.now(), "YYMMDDHHmmssSS")
+  )
     .then((ret) => ret.json())
     .then((data) => {
       onlineCIDS.value = data;
     });
-
 }
 
 defineExpose({ getOnlineCids });
@@ -31,7 +34,7 @@ defineExpose({ getOnlineCids });
           <tr class="bg-grey-1">
             <th class="text-left">Status</th>
             <th>Name</th>
-            <th>Info</th>
+            <th>Callsign</th>
             <th>Since</th>
           </tr>
         </thead>
@@ -45,9 +48,19 @@ defineExpose({ getOnlineCids });
                 }}
               </q-badge>
             </td>
-            <td>{{ f.realname }}</td>
+            <td>
+              {{ f.realname }}
+              <template v-if="f.clienttype === 'PILOT'">
+                <q-badge class="q-ml-sm">{{ f.planned_depairport }}</q-badge>
+                <q-icon name="east" class="q-mx-xs" />
+                <q-badge>{{ f.planned_destairport }}</q-badge>
+              </template>
+
+            </td>
             <td>{{ f.callsign }}</td>
-            <td v-html="`${f.time_logon.slice(8, 10)}:${f.time_logon.slice(10, 12)}z`"></td>
+            <td v-html="
+              `${f.time_logon.slice(8, 10)}:${f.time_logon.slice(10, 12)}z`
+            "></td>
           </tr>
         </tbody>
       </q-markup-table>
