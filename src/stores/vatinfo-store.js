@@ -2,9 +2,10 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useVatinfoStore = defineStore("vatinfo", () => {
-  const ident = ref("");
+  const saveMetars = (v) => localStorage.setItem("metars", JSON.stringify(v));
+  const loadMetars = () => {
+    return JSON.parse(localStorage.getItem("metars"));
+  };
 
-  const updateIdent = (v) => (ident.value = v);
-
-  return { ident, updateIdent };
+  return { saveMetars, loadMetars };
 });

@@ -1,7 +1,9 @@
 <script setup>
-import { ref, inject, onMounted, computed } from "vue";
+import { ref, inject, onMounted, computed, watch } from "vue";
 import { useQuasar, QSpinnerGears, date } from "quasar";
+import { useVatinfoStore } from "src/stores/vatinfo-store";
 
+const cfgStore = useVatinfoStore();
 const cfg = inject("appConfig");
 const isFetching = ref(false);
 const txtICAO = ref("");
@@ -33,9 +35,8 @@ function clearMetars() {
 }
 
 onMounted(() => {
-  cfg.metarList.forEach(m => {
-    getMetar(m).then((d) => { if (d.metar.trim() != '') arrMetars.value.push(d) });
-  });
+  arrMetars.value = cfgStore.loadMetars();
+  watch(arrMetars, refreshAllMetars)
 });
 
 defineExpose({ refreshAllMetars })
@@ -59,11 +60,25 @@ defineExpose({ refreshAllMetars })
           </q-input>
         </div>
         <div class="col-12 col-lg-7">
-          <q-btn-group rounded push :stretch="false" class="q-ma-md">
-            <q-btn @click="updatePanel()" label="Get it" color="primary" style="font-size:0.8rem" />
-            <q-btn @click="refreshAllMetars()" icon-right="update" label="Refresh" color="info"
-              style="font-size:0.8rem" />
-            <q-btn @click="clearMetars()" label="Clear" color="negative" style="font-size:0.8rem" />
+          <q-btn-group push :stretch="false" class="q-ma-md">
+            <q-btn @click="updatePanel()" label="Get it" color="primary" class="footer-text" />
+            <q-btn @click="refreshAllMetars()" label="Refresh" color="info" class="footer-text" />
+            <q-btn @click="clearMetars()" label="Clear" color="negative" class="footer-text" />
+            <q-btn-dropdown color="primary" icon="import_export" class="footer-text">
+              <q-list>
+                <q-item clickable v-close-popup @click="arrMetars = cfgStore.loadMetars()">
+                  <q-item-section>
+                    <q-item-label>Load</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item clickable v-close-popup @click="cfgStore.saveMetars(arrMetars)">
+                  <q-item-section>
+                    <q-item-label>Save</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-btn-dropdown>
           </q-btn-group>
         </div>
       </div>
