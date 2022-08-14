@@ -1,10 +1,24 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <q-header elevated class="bg-primary text-white shadow-5" height-hint="98">
-      <q-toolbar>
-        <q-toolbar-title class="text-weight-400 text-h5 text-center">VATINFO Panels</q-toolbar-title>
-        <q-btn @click="$refs.view.updateData()" icon="update" color="positive" label="Refresh All" size="md" />
-      </q-toolbar>
+      <div class="row items-center justify-around">
+        <div class="col-12 col-sm-5 text-center">
+          <h1 class="text-weight-400 text-h5 q-ma-none">VATINFO Panels</h1>
+        </div>
+        <div class="col-12 col-sm-5 text-center q-ma-xs">
+          <q-chip dense square color="blue-grey-2" icon="public">
+            <q-badge color="accent" text-color="white" class="q-mx-sm">{{ currentUTCTime }}</q-badge>
+          </q-chip>
+          <q-chip dense square color="blue-grey-2" icon="home">
+            <q-badge color="accent" text-color="white" class="q-mx-sm">{{ currentTime }}</q-badge>
+          </q-chip>
+          <q-chip dense square color="blue-grey-2" icon="published_with_changes">
+            <q-badge color="accent" text-color="white" class="q-mx-sm"> {{ lastRefresh }}</q-badge>
+          </q-chip>
+          <q-btn @click="$refs.view.updateData(); updateRefreshTime()" icon="update" color="positive"
+            label="Refresh All" size="md" />
+        </div>
+      </div>
     </q-header>
 
     <q-page-container>
@@ -28,4 +42,30 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue';
+import { date } from "quasar";
+
+const currentUTCTime = ref()
+const currentTime = ref()
+const lastRefresh = ref()
+
+const updateTime = () => {
+  let d = new Date()
+  currentUTCTime.value = `${d.getUTCHours().toString().padStart(2, '0')}:${d.getUTCMinutes().toString().padStart(2, '0')}`
+  currentTime.value = date.formatDate(d, 'HH:mm')
+}
+
+const updateRefreshTime = () => {
+  lastRefresh.value = currentTime.value
+}
+
+onMounted(() => {
+  updateTime();
+  updateRefreshTime();
+  setInterval(() => {
+    updateTime()
+  }, 60000);
+})
+
+
 </script>

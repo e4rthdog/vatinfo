@@ -1,9 +1,5 @@
 <template>
   <q-page class="q-ma-md">
-    <div class="row q-ma-none">
-      <q-space></q-space>
-      <p style="font-size:0.8rem;">Last Refresh: {{ lastRefresh }}</p>
-    </div>
     <div class="row">
       <div class="col-12 col-md-5 q-ma-sm">
         <events ref="eventsRef"></events>
@@ -40,7 +36,6 @@ const eventsRef = ref();
 const friendsRef = ref();
 const metarRef = ref();
 const infoRef = ref();
-const lastRefresh = ref();
 const soulis = ref('bla bla bla');
 const allClients = ref([]);
 
@@ -56,7 +51,6 @@ async function updateData() {
   await metarRef.value.refreshAllMetars();
   $q.loading.show({ message: "Refreshing INFO ...", spinner: QSpinnerGears })
   await getClients();
-  updateTime();
   $q.loading.hide();
 }
 
@@ -69,10 +63,6 @@ onMounted(() => {
   updateData();
   setInterval(updateData, cfg.refreshInterval);
 });
-
-function updateTime() {
-  lastRefresh.value = date.formatDate(Date.now(), 'HH:mm')
-}
 
 defineExpose({ updateData });
 
