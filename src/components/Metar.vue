@@ -52,7 +52,7 @@ defineExpose({ refreshAllMetars })
     <q-card-section>
       <div class="row items-center">
         <div class="col-12 col-lg-5">
-          <q-input id="txtMetar" @keypress.enter="updatePanel()" color="positive" v-model.trim="txtICAO"
+          <q-input id="txtMetar" @keypress.enter="updatePanel()" color="positive" v-model.trim="txtICAO" dense
             label="Airport ICAO">
             <template v-slot:prepend>
               <q-icon name="flight_takeoff" />

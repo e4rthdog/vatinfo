@@ -16,7 +16,7 @@
             <q-badge color="accent" text-color="white" class="q-mx-sm"> {{ lastRefresh }}</q-badge>
           </q-chip>
           <q-btn @click="$refs.view.updateData(); updateRefreshTime()" icon="update" color="positive"
-            label="Refresh All" size="md" />
+            label="Refresh All" size="0.7rem" />
         </div>
       </div>
     </q-header>

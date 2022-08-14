@@ -7,5 +7,10 @@ export const useVatinfoStore = defineStore("vatinfo", () => {
     return JSON.parse(localStorage.getItem("metars")) ?? [];
   };
 
-  return { saveMetars, loadMetars };
+  const saveCIDS = (v) => localStorage.setItem("cids", JSON.stringify(v));
+  const loadCIDS = () => {
+    return JSON.parse(localStorage.getItem("cids")) ?? [];
+  };
+
+  return { saveMetars, loadMetars, saveCIDS, loadCIDS };
 });
