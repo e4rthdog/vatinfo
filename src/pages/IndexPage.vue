@@ -31,6 +31,7 @@ import Metar from "components/Metar.vue";
 import Info from "components/Info.vue"
 
 const cfg = inject("appConfig");
+const updateRefreshTime = inject('updateRefreshTime')
 const $q = useQuasar();
 const eventsRef = ref();
 const friendsRef = ref();
@@ -38,7 +39,6 @@ const metarRef = ref();
 const infoRef = ref();
 const soulis = ref('bla bla bla');
 const allClients = ref([]);
-
 
 provide('updateData', updateData);
 provide('allClients', allClients)
@@ -52,6 +52,7 @@ async function updateData() {
   $q.loading.show({ message: "Refreshing INFO ...", spinner: QSpinnerGears })
   await getClients();
   $q.loading.hide();
+  updateRefreshTime();
 }
 
 async function getClients() {

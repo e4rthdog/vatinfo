@@ -7,7 +7,7 @@
         </div>
         <div class="col-12 col-sm-5 text-center q-ma-xs">
           <q-chip dense square color="blue-grey-2" icon="public">
-            <q-badge color="accent" text-color="white" class="q-mx-sm">{{ currentUTCTime }}</q-badge>
+            <q-badge color="accent" text-color="white" class="q-mx-sm">{{ currentUTCTime }}z</q-badge>
           </q-chip>
           <q-chip dense square color="blue-grey-2" icon="home">
             <q-badge color="accent" text-color="white" class="q-mx-sm">{{ currentTime }}</q-badge>
@@ -42,13 +42,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, provide } from 'vue';
 import { date } from "quasar";
 
 const currentUTCTime = ref()
 const currentTime = ref()
 const lastRefresh = ref()
-
 const updateTime = () => {
   let d = new Date()
   currentUTCTime.value = `${d.getUTCHours().toString().padStart(2, '0')}:${d.getUTCMinutes().toString().padStart(2, '0')}`
@@ -58,6 +57,7 @@ const updateTime = () => {
 const updateRefreshTime = () => {
   lastRefresh.value = currentTime.value
 }
+provide('updateRefreshTime', updateRefreshTime)
 
 onMounted(() => {
   updateTime();
@@ -66,6 +66,5 @@ onMounted(() => {
     updateTime()
   }, 60000);
 })
-
 
 </script>
