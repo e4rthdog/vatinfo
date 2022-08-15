@@ -69,8 +69,8 @@
 <script setup>
 import { ref, inject, computed } from "vue";
 import { date } from "quasar";
-
-const cfg = inject("appConfig");
+import appConfig
+  from "src/config";
 const allClients = inject('allClients');
 const todaysEvents = ref([]);
 const tabName = ref('ctr');

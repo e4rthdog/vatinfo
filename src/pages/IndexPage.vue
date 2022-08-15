@@ -29,15 +29,16 @@ import Events from "components/Events.vue";
 import Friends from "components/Friends.vue";
 import Metar from "components/Metar.vue";
 import Info from "components/Info.vue"
+import { useVatinfoStore } from "src/stores/vatinfo-store";
+import appConfig from "src/config";
 
-const cfg = inject("appConfig");
+const cfgStore = useVatinfoStore();
 const updateRefreshTime = inject('updateRefreshTime')
 const $q = useQuasar();
 const eventsRef = ref();
 const friendsRef = ref();
 const metarRef = ref();
 const infoRef = ref();
-const soulis = ref('bla bla bla');
 const allClients = ref([]);
 
 provide('updateData', updateData);
@@ -56,13 +57,13 @@ async function updateData() {
 }
 
 async function getClients() {
-  await fetch(cfg.clientsURL + '&' + date.formatDate(Date.now(), 'YYMMDDHHmmssSS'))
+  await fetch(appConfig.clientsURL + '&' + date.formatDate(Date.now(), 'YYMMDDHHmmssSS'))
     .then((ret) => ret.json())
     .then((m) => allClients.value = m);
 }
-onMounted(() => {
+onMounted(async () => {
   updateData();
-  setInterval(updateData, cfg.refreshInterval);
+  setInterval(updateData, appConfig.refreshInterval);
 });
 
 defineExpose({ updateData });

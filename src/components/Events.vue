@@ -1,8 +1,8 @@
 <script setup>
 import { ref, inject } from "vue";
 import { date } from "quasar";
+import appConfig from "src/config";
 
-const cfg = inject("appConfig");
 const todaysEvents = ref([]);
 
 function eventAirports(e) {
@@ -12,7 +12,7 @@ function eventAirports(e) {
 }
 
 async function getEvents() {
-  await fetch(cfg.eventsURL + '?nonce=' + date.formatDate(Date.now(), 'YYMMDDHHmmssSS'))
+  await fetch(appConfig.eventsURL + '?nonce=' + date.formatDate(Date.now(), 'YYMMDDHHmmssSS'))
     .then((ret) => ret.json())
     .then((json) => {
       todaysEvents.value = json.data.filter((e) =>

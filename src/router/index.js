@@ -1,4 +1,5 @@
 import { route } from "quasar/wrappers";
+import { useVatinfoStore } from "src/stores/vatinfo-store";
 import {
   createRouter,
   createMemoryHistory,
@@ -6,7 +7,6 @@ import {
   createWebHashHistory,
 } from "vue-router";
 import routes from "./routes";
-import { useVatinfoStore } from "src/stores/vatinfo-store";
 
 /*
  * If not building with SSR mode, you can
@@ -17,7 +17,7 @@ import { useVatinfoStore } from "src/stores/vatinfo-store";
  * with the Router instance.
  */
 
-export default route(function (/* { store, ssrContext } */) {
+export default route(function ({ store }) {
   const createHistory = process.env.SERVER
     ? createMemoryHistory
     : process.env.VUE_ROUTER_MODE === "history"
@@ -32,6 +32,17 @@ export default route(function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE),
+  });
+
+  const cfgStore = useVatinfoStore();
+  console.log(cfgStore.ident);
+
+  Router.beforeEach((to, from) => {
+    console.log(`beforeEach: ${cfgStore.isAuthenticated}, ${to.name}`);
+
+    if (to.name !== "Login" && !cfgStore.isAuthenticated) {
+      return { name: "Login" };
+    }
   });
 
   return Router;

@@ -9,6 +9,7 @@ const appConfig = {
   serversURL: "https://vatboard.estassinos.com/getdata.php?type=SERVERS",
   callsignURL: "https://vatboard.estassinos.com/getdata.php?type=CALLSIGN&q=",
   clientsURL: "https://vatboard.estassinos.com/getdata.php?type=ALL",
+  apiURL: "http://localhost/api.php/records/vatinfo",
   // friendsCID:
   //   "1041728,837997,819311,810670,810309,898093,827599,1463640,1378014,963239,1008143",
   status: {

@@ -2,9 +2,9 @@
 import { ref, inject, computed, onMounted } from "vue";
 import { date } from "quasar";
 import { useVatinfoStore } from "src/stores/vatinfo-store";
+import appConfig from "src/config";
 
 const cfgStore = useVatinfoStore();
-const cfg = inject("appConfig");
 const onlineCIDS = ref([]);
 const trackedCIDS = ref([])
 const trackedCIDSfetch = computed(() => { return trackedCIDS.value.join(',') });
@@ -14,7 +14,6 @@ const txtCID = ref()
 function formAddCID() {
   trackedCIDS.value.push(txtCID.value);
   txtCID.value = '';
-  console.log(trackedCIDSfetch.value)
 }
 
 function formRemoveCID() {
@@ -23,7 +22,7 @@ function formRemoveCID() {
 }
 async function getOnlineCids() {
   await fetch(
-    cfg.cidsURL +
+    appConfig.cidsURL +
     trackedCIDSfetch.value +
     "&nonce=" +
     date.formatDate(Date.now(), "YYMMDDHHmmssSS")
@@ -32,7 +31,6 @@ async function getOnlineCids() {
     .then((data) => {
       onlineCIDS.value = data;
     });
-  console.log(trackedCIDSfetch.value)
 }
 
 onMounted(() => {
@@ -67,7 +65,7 @@ defineExpose({ getOnlineCids });
             <tr v-if="f.callsign">
               <td class="text-left">
                 <q-badge class="q-pa-xs" color="green">
-                  <q-icon :name="cfg.status[f.clienttype]" class="q-mr-xs" />{{
+                  <q-icon :name="appConfig.status[f.clienttype]" class="q-mr-xs" />{{
                       f.clienttype
                   }}
                 </q-badge>

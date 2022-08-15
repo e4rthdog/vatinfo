@@ -16,11 +16,11 @@
             <q-badge color="accent" text-color="white" class="q-mx-sm"> {{ lastRefresh }}</q-badge>
           </q-chip>
           <q-btn @click="$refs.view.updateData(); updateRefreshTime()" icon="update" color="positive"
-            label="Refresh All" size="0.7rem" />
+            label="Refresh All" size="sm" class='q-ma-xs' />
+          <q-btn @click="logout()" icon="logout" color="negative" :label="`LogOut (${cfgStore.ident})`" size="sm" />
         </div>
       </div>
     </q-header>
-
     <q-page-container>
       <router-view v-slot="{ Component }">
         <component ref="view" :is="Component" />
@@ -44,7 +44,11 @@
 <script setup>
 import { ref, onMounted, provide } from 'vue';
 import { date } from "quasar";
+import { useVatinfoStore } from 'src/stores/vatinfo-store';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
+const cfgStore = useVatinfoStore();
 const currentUTCTime = ref()
 const currentTime = ref()
 const lastRefresh = ref()
@@ -56,6 +60,11 @@ const updateTime = () => {
 
 const updateRefreshTime = () => {
   lastRefresh.value = currentTime.value
+}
+
+const logout = () => {
+  cfgStore.authAction();
+  router.push('/login')
 }
 provide('updateRefreshTime', updateRefreshTime)
 

@@ -2,9 +2,9 @@
 import { ref, inject, onMounted, computed, watch } from "vue";
 import { useQuasar, QSpinnerGears, date } from "quasar";
 import { useVatinfoStore } from "src/stores/vatinfo-store";
+import appConfig from "src/config";
 
 const cfgStore = useVatinfoStore();
-const cfg = inject("appConfig");
 const isFetching = ref(false);
 const txtICAO = ref("");
 const arrMetars = ref([]);
@@ -12,7 +12,7 @@ const arrMetarsSorted = computed(() => arrMetars.value.sort((a, b) => (a.icao > 
 const $q = useQuasar();
 
 async function getMetar(icao = txtICAO.value.toUpperCase()) {
-  return await fetch(cfg.metarURL + icao + '&nonce=' + date.formatDate(Date.now(), 'YYMMDDHHmmssSS'))
+  return await fetch(appConfig.metarURL + icao + '&nonce=' + date.formatDate(Date.now(), 'YYMMDDHHmmssSS'))
     .then((ret) => ret.text())
     .then((m) => {
       return { icao: icao, metar: m };
@@ -34,8 +34,13 @@ function clearMetars() {
   arrMetars.value = [];
 }
 
-onMounted(() => {
-  arrMetars.value = cfgStore.loadMetars();
+onMounted(async () => {
+  cfgStore.identDBdATA = await cfgStore.loadIdentDataAPI();
+
+  cfgStore.identDBdATA.forEach(m => {
+    if (m.metar.trim() != '') arrMetars.value.push({ id: m.id, icao: m.metar, metar: '' });
+  });
+
   watch(arrMetars, refreshAllMetars)
 });
 
