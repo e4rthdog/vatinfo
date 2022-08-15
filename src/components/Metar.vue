@@ -34,13 +34,15 @@ function clearMetars() {
   arrMetars.value = [];
 }
 
-onMounted(async () => {
-  cfgStore.identDBdATA = await cfgStore.loadIdentDataAPI();
-
+function fillarrMetars() {
+  arrMetars.value = []
   cfgStore.identDBdATA.forEach(m => {
     if (m.metar.trim() != '') arrMetars.value.push({ id: m.id, icao: m.metar, metar: '' });
   });
-
+}
+onMounted(async () => {
+  cfgStore.identDBdATA = await cfgStore.loadIdentDataAPI();
+  fillarrMetars()
   watch(arrMetars, refreshAllMetars)
 });
 
@@ -71,7 +73,7 @@ defineExpose({ refreshAllMetars })
             <q-btn @click="clearMetars()" label="Clear" color="negative" class="footer-text" />
             <q-btn-dropdown color="primary" icon="import_export" class="footer-text">
               <q-list>
-                <q-item clickable v-close-popup @click="arrMetars = cfgStore.loadMetars()">
+                <q-item clickable v-close-popup @click="fillarrMetars(); refreshAllMetars()">
                   <q-item-section>
                     <q-item-label>Load</q-item-label>
                   </q-item-section>

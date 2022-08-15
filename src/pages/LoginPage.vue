@@ -8,7 +8,7 @@ const cfgStore = useVatinfoStore();
 const router = useRouter();
 
 const login = () => {
-  cfgStore.authAction(txtIdent.value);
+  cfgStore.authAction(txtIdent.value.toUpperCase());
   router.push('/')
 }
 
