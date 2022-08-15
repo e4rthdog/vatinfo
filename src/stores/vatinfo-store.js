@@ -16,7 +16,7 @@ export const useVatinfoStore = defineStore("vatinfo", () => {
   const saveMetarsDB = async (v) => {
     const response = await fetch(
       appConfig.apiURL +
-        "/vatinfo-metars.php?type=metar&ident=" +
+        "/vatinfo-panels.php?type=metar&ident=" +
         ident.value +
         "&action=save" +
         "&nonce=" +
@@ -35,7 +35,7 @@ export const useVatinfoStore = defineStore("vatinfo", () => {
   const saveCIDDB = async (v) => {
     const response = await fetch(
       appConfig.apiURL +
-        "/vatinfo-metars.php?type=cid&ident=" +
+        "/vatinfo-panels.php?type=cid&ident=" +
         ident.value +
         "&action=save" +
         "&nonce=" +
@@ -77,7 +77,7 @@ export const useVatinfoStore = defineStore("vatinfo", () => {
     arrCIDS.value = [];
     return await fetch(
       appConfig.apiURL +
-        "/vatinfo-metars.php?action=load&ident=" +
+        "/vatinfo-panels.php?action=load&ident=" +
         ident.value +
         "&nonce=" +
         date.formatDate(Date.now(), "YYMMDDHHmmssSS")
