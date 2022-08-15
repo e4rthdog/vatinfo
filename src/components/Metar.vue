@@ -30,7 +30,7 @@ function updatePanel() {
 }
 
 function clearMetars() {
-  cfgStore.arrMetars = [];
+  cfgStore.clearMetars();
 }
 
 const loadMetars = async () => {

@@ -16,7 +16,7 @@ export const useVatinfoStore = defineStore("vatinfo", () => {
   const saveMetarsDB = async (v) => {
     const response = await fetch(
       appConfig.apiURL +
-        "/vatinfo-metars.php?ident=" +
+        "/vatinfo-metars.php?type=metar&ident=" +
         ident.value +
         "&action=save" +
         "&nonce=" +
@@ -32,9 +32,30 @@ export const useVatinfoStore = defineStore("vatinfo", () => {
     console.log(response);
   };
 
-  const saveCIDS = (v) => localStorage.setItem("cids", JSON.stringify(v));
-  const loadCIDS = () => {
-    return JSON.parse(localStorage.getItem("cids")) ?? [];
+  const saveCIDDB = async (v) => {
+    const response = await fetch(
+      appConfig.apiURL +
+        "/vatinfo-metars.php?type=cid&ident=" +
+        ident.value +
+        "&action=save" +
+        "&nonce=" +
+        date.formatDate(Date.now(), "YYMMDDHHmmssSS"),
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data: v }),
+      }
+    ).then((r) => r.json());
+    console.log(response);
+  };
+
+  const clearMetars = () => {
+    arrMetars.value = [];
+  };
+  const removeCID = (toRemove) => {
+    arrCIDS.value = arrCIDS.value.filter((r) => r != toRemove);
   };
 
   const authAction = async (loginFormIdent = "") => {
@@ -51,7 +72,9 @@ export const useVatinfoStore = defineStore("vatinfo", () => {
     }
   };
 
-  const loadIdentDataAPI = async () => {
+  const loadIdentDataAPI = async (mode) => {
+    if (mode != "friends") arrMetars.value = [];
+    arrCIDS.value = [];
     return await fetch(
       appConfig.apiURL +
         "/vatinfo-metars.php?action=load&ident=" +
@@ -62,20 +85,25 @@ export const useVatinfoStore = defineStore("vatinfo", () => {
       .then((ret) => ret.json())
       .then((m) => {
         m.data.forEach((k) => {
-          if (k.metar.trim() != "")
+          if (k.metar.trim() != "" && mode != "friends") {
             arrMetars.value.push({ id: k.id, icao: k.metar, metar: "" });
-          if (k.cid.trim() != "") arrCIDS.value.push(k.cid.trim());
+          }
+
+          if (k.cid.trim() != "") {
+            arrCIDS.value.push(k.cid.trim());
+          }
+          return m.records;
         });
-        return m.records;
       });
   };
 
   return {
     saveMetarsDB,
-    saveCIDS,
-    loadCIDS,
     loadIdentDataAPI,
     authAction,
+    removeCID,
+    clearMetars,
+    saveCIDDB,
     ident,
     identDBdATA,
     isAuthenticated,

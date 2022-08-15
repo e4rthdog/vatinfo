@@ -6,36 +6,56 @@ import appConfig from "src/config";
 
 const cfgStore = useVatinfoStore();
 const onlineCIDS = ref([]);
-const trackedCIDS = ref([])
-const trackedCIDSfetch = computed(() => { return trackedCIDS.value.join(',') });
 const dlgManage = ref(false);
 const txtCID = ref()
 
+
+const loadCID = async () => {
+  await cfgStore.loadIdentDataAPI('friends');
+  await getOnlineCids();
+}
+
 function formAddCID() {
-  trackedCIDS.value.push(txtCID.value);
+  cfgStore.$patch((state) => {
+    state.arrCIDS.push(txtCID.value.toUpperCase());
+  });
   txtCID.value = '';
 }
 
-function formRemoveCID() {
-  trackedCIDS.value = trackedCIDS.value.filter(s => s != txtCID.value);
-  txtCID.value = ''
-}
-async function getOnlineCids() {
-  await fetch(
-    appConfig.cidsURL +
-    trackedCIDSfetch.value +
-    "&nonce=" +
-    date.formatDate(Date.now(), "YYMMDDHHmmssSS")
-  )
-    .then((ret) => ret.json())
-    .then((data) => {
-      onlineCIDS.value = data;
-    });
+function formClearCID() {
+  cfgStore.$patch((state) => {
+    state.arrCIDS = []
+  });
 }
 
-onMounted(() => {
-  trackedCIDS.value = cfgStore.loadCIDS();
-})
+function formRemoveCID() {
+  cfgStore.removeCID(txtCID.value.toUpperCase());
+  txtCID.value = ''
+}
+
+async function getOnlineCids() {
+  onlineCIDS.value = []
+  cfgStore.arrCIDS.forEach(async (c) => {
+    if (!isNaN(c)) {
+      await fetch(appConfig.cidURL + '&q=' + c +
+        "&nonce=" +
+        date.formatDate(Date.now(), "YYMMDDHHmmssSS"))
+        .then((response) => response.json())
+        .then((data) => {
+          onlineCIDS.value = onlineCIDS.value.concat(data);
+        })
+    } else {
+      await fetch(appConfig.callsignURL + '&q=' + c +
+        "&nonce=" +
+        date.formatDate(Date.now(), "YYMMDDHHmmssSS"))
+        .then((response) => response.json())
+        .then((data) => {
+          onlineCIDS.value = onlineCIDS.value.concat(data);
+        })
+    }
+  })
+}
+
 
 defineExpose({ getOnlineCids });
 </script>
@@ -109,16 +129,16 @@ defineExpose({ getOnlineCids });
           <q-btn-group push :stretch="false" class="q-ma-md">
             <q-btn @click="formAddCID()" label="Add" color="primary" class="footer-text" />
             <q-btn @click="formRemoveCID()" label="Remove" color="primary" class="footer-text" />
-            <q-btn @click="trackedCIDS = []" label="Clear" color="negative" class="footer-text" />
+            <q-btn @click="formClearCID()" label="Clear" color="negative" class="footer-text" />
             <q-btn-dropdown color="primary" icon="import_export" class="footer-text">
               <q-list>
-                <q-item clickable v-close-popup @click="trackedCIDS = cfgStore.loadCIDS()">
+                <q-item clickable v-close-popup @click="loadCID()">
                   <q-item-section>
                     <q-item-label>Load</q-item-label>
                   </q-item-section>
                 </q-item>
 
-                <q-item clickable v-close-popup @click="cfgStore.saveCIDS(trackedCIDS)">
+                <q-item clickable v-close-popup @click="cfgStore.saveCIDDB(cfgStore.arrCIDS)">
                   <q-item-section>
                     <q-item-label>Save</q-item-label>
                   </q-item-section>
@@ -130,9 +150,11 @@ defineExpose({ getOnlineCids });
 
       </q-card-section>
       <q-card-section>
-        {{ trackedCIDSfetch }}
+        <div v-for="(f, index) in cfgStore.arrCIDS" :key="index">
+          <span>{{ f }}</span>
+        </div>
       </q-card-section>
-      <q-card-actions align="right" class="positive text-teal">
+      <q-card-actions align=" right" class="positive text-teal">
         <q-btn flat label="Close" v-close-popup />
       </q-card-actions>
     </q-card>
