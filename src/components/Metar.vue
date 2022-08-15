@@ -75,7 +75,7 @@ defineExpose({ refreshAllMetars })
                   </q-item-section>
                 </q-item>
 
-                <q-item clickable v-close-popup @click="cfgStore.saveMetarsDB(arrMetars)">
+                <q-item clickable v-close-popup @click="cfgStore.saveMetarsDB(cfgStore.arrMetars)">
                   <q-item-section>
                     <q-item-label>Save</q-item-label>
                   </q-item-section>

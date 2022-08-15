@@ -16,9 +16,11 @@ export const useVatinfoStore = defineStore("vatinfo", () => {
   const saveMetarsDB = async (v) => {
     const response = await fetch(
       appConfig.apiURL +
-        "vatinfo-metars.php?ident=" +
+        "/vatinfo-metars.php?ident=" +
         ident.value +
-        "&action=save",
+        "&action=save" +
+        "&nonce=" +
+        date.formatDate(Date.now(), "YYMMDDHHmmssSS"),
       {
         method: "POST",
         headers: {
@@ -52,7 +54,7 @@ export const useVatinfoStore = defineStore("vatinfo", () => {
   const loadIdentDataAPI = async () => {
     return await fetch(
       appConfig.apiURL +
-        "vatinfo-metars.php?action=load&ident=" +
+        "/vatinfo-metars.php?action=load&ident=" +
         ident.value +
         "&nonce=" +
         date.formatDate(Date.now(), "YYMMDDHHmmssSS")
