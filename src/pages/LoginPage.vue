@@ -7,8 +7,8 @@ const txtIdent = ref('')
 const cfgStore = useVatinfoStore();
 const router = useRouter();
 
-const login = () => {
-  cfgStore.authAction(txtIdent.value.toUpperCase());
+const login = async () => {
+  await cfgStore.authAction(txtIdent.value.toUpperCase());
   router.push('/')
 }
 

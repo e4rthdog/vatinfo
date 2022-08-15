@@ -21,13 +21,15 @@ export const useVatinfoStore = defineStore("vatinfo", () => {
     return JSON.parse(localStorage.getItem("cids")) ?? [];
   };
 
-  const authAction = (loginFormIdent = "") => {
+  const authAction = async (loginFormIdent = "") => {
     if (loginFormIdent !== "") {
       ident.value = previousIdent.value = loginFormIdent;
+      identDBdATA.value = await loadIdentDataAPI();
       localStorage.setItem("ident", loginFormIdent);
       localStorage.setItem("previousIdent", loginFormIdent);
     } else {
       ident.value = previousIdent.value = "";
+      identDBdATA.value = [];
       localStorage.setItem("previousident", previousIdent.value);
       localStorage.setItem("ident", "");
     }

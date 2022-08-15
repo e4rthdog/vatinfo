@@ -41,7 +41,6 @@ function fillarrMetars() {
   });
 }
 onMounted(async () => {
-  cfgStore.identDBdATA = await cfgStore.loadIdentDataAPI();
   fillarrMetars()
   watch(arrMetars, refreshAllMetars)
 });
