@@ -7,8 +7,7 @@ import appConfig from "src/config";
 const cfgStore = useVatinfoStore();
 const isFetching = ref(false);
 const txtICAO = ref("");
-const arrMetars = ref([]);
-const arrMetarsSorted = computed(() => arrMetars.value.sort((a, b) => (a.icao > b.icao) ? 1 : -1));
+const arrMetarsSorted = computed(() => cfgStore.arrMetars.sort((a, b) => (a.icao > b.icao) ? 1 : -1));
 const $q = useQuasar();
 
 async function getMetar(icao = txtICAO.value.toUpperCase()) {
@@ -20,29 +19,27 @@ async function getMetar(icao = txtICAO.value.toUpperCase()) {
 }
 
 async function refreshAllMetars() {
-  for await (const m of arrMetars.value) {
+  for await (const m of cfgStore.arrMetars) {
     await getMetar(m.icao).then((d) => (m.metar = d.metar));
   }
 }
 
 function updatePanel() {
-  getMetar().then((d) => { if (d.metar.trim() != '') arrMetars.value.push(d) });
+  getMetar().then((d) => { if (d.metar.trim() != '') cfgStore.arrMetars.push(d) });
   txtICAO.value = "";
 }
 
 function clearMetars() {
-  arrMetars.value = [];
+  cfgStore.arrMetars = [];
 }
 
-function fillarrMetars() {
-  arrMetars.value = []
-  cfgStore.identDBdATA.forEach(m => {
-    if (m.metar.trim() != '') arrMetars.value.push({ id: m.id, icao: m.metar, metar: '' });
-  });
+const loadMetars = async () => {
+  await cfgStore.loadIdentDataAPI();
+  refreshAllMetars();
 }
+
 onMounted(async () => {
-  fillarrMetars()
-  watch(arrMetars, refreshAllMetars)
+  watch(cfgStore.arrMetars, refreshAllMetars)
 });
 
 defineExpose({ refreshAllMetars })
@@ -72,13 +69,13 @@ defineExpose({ refreshAllMetars })
             <q-btn @click="clearMetars()" label="Clear" color="negative" class="footer-text" />
             <q-btn-dropdown color="primary" icon="import_export" class="footer-text">
               <q-list>
-                <q-item clickable v-close-popup @click="fillarrMetars(); refreshAllMetars()">
+                <q-item clickable v-close-popup @click="loadMetars()">
                   <q-item-section>
                     <q-item-label>Load</q-item-label>
                   </q-item-section>
                 </q-item>
 
-                <q-item clickable v-close-popup @click="cfgStore.saveMetars(arrMetars)">
+                <q-item clickable v-close-popup @click="cfgStore.saveMetarsDB(arrMetars)">
                   <q-item-section>
                     <q-item-label>Save</q-item-label>
                   </q-item-section>
