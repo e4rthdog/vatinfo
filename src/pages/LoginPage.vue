@@ -1,4 +1,5 @@
 //BUG: First time pressing enter does nothing
+//TODO Beautify me
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useVatinfoStore } from 'src/stores/vatinfo-store';

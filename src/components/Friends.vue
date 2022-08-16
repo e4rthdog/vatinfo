@@ -1,6 +1,6 @@
 <script setup>
 import { ref, inject, computed, onMounted } from "vue";
-import { date } from "quasar";
+import { useQuasar, QSpinnerGears, date, QSpinnerHourglass } from "quasar";
 import { useVatinfoStore } from "src/stores/vatinfo-store";
 import appConfig from "src/config";
 import _ from 'lodash';
@@ -10,11 +10,20 @@ const onlineCIDS = ref([]);
 const dlgManage = ref(false);
 const txtCID = ref()
 const allClients = inject('allClients');
-
+const $q = useQuasar();
 
 const loadCID = async () => {
+  $q.loading.show({ message: "Loading your favorite Pilots/Controllers ...", spinner: QSpinnerHourglass })
   await cfgStore.loadIdentDataAPI('friends');
   await getOnlineCids();
+  $q.loading.hide();
+}
+
+const saveCID = async () => {
+  $q.loading.show({ message: "Saving your favorite Pilots/Controllers ...", spinner: QSpinnerHourglass })
+  await cfgStore.saveCIDDB(cfgStore.arrCIDS)
+  $q.loading.hide();
+
 }
 
 async function formAddCID() {
@@ -136,7 +145,7 @@ defineExpose({ getOnlineCids });
                   </q-item-section>
                 </q-item>
 
-                <q-item clickable v-close-popup @click="cfgStore.saveCIDDB(cfgStore.arrCIDS)">
+                <q-item clickable v-close-popup @click="saveCID()">
                   <q-item-section>
                     <q-item-label>Save</q-item-label>
                   </q-item-section>

@@ -1,4 +1,4 @@
-//TODO Add spinner on loading/saving from API (metars, friends)
+//TODO Add help in each panel
 //TODO Add version indication
 <template>
   <q-page class="q-ma-md">
@@ -43,6 +43,7 @@ const metarRef = ref();
 const infoRef = ref();
 const allClients = ref([]);
 const allEvents = ref([]);
+const isBusy = ref(false);
 
 provide('updateData', updateData);
 provide('allClients', allClients)

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, inject, onMounted, computed, watch } from "vue";
-import { useQuasar, QSpinnerGears, date } from "quasar";
+import { useQuasar, QSpinnerGears, date, QSpinnerHourglass } from "quasar";
 import { useVatinfoStore } from "src/stores/vatinfo-store";
 import appConfig from "src/config";
 
@@ -34,8 +34,16 @@ function clearMetars() {
 }
 
 const loadMetars = async () => {
+  $q.loading.show({ message: "Loading your favorite ICAOs ...", spinner: QSpinnerHourglass })
   await cfgStore.loadIdentDataAPI();
-  refreshAllMetars();
+  await refreshAllMetars();
+  $q.loading.hide();
+}
+
+const saveMetarsPanel = async () => {
+  $q.loading.show({ message: "Saving you favorite ICAOs ...", spinner: QSpinnerHourglass })
+  await cfgStore.saveMetarsDB(cfgStore.arrMetars)
+  $q.loading.hide();
 }
 
 onMounted(async () => {
@@ -75,7 +83,7 @@ defineExpose({ refreshAllMetars })
                   </q-item-section>
                 </q-item>
 
-                <q-item clickable v-close-popup @click="cfgStore.saveMetarsDB(cfgStore.arrMetars)">
+                <q-item clickable v-close-popup @click="saveMetarsPanel()">
                   <q-item-section>
                     <q-item-label>Save</q-item-label>
                   </q-item-section>
