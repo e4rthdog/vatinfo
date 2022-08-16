@@ -55,7 +55,7 @@ export const useVatinfoStore = defineStore("vatinfo", () => {
   const removeCID = (toRemove) => {
     arrCIDS.value = arrCIDS.value.filter((r) => r != toRemove);
   };
-  //BUG: previousident is blank?
+
   const authAction = async (loginFormIdent = "") => {
     if (loginFormIdent !== "") {
       ident.value = previousIdent.value = loginFormIdent;

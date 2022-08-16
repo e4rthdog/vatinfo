@@ -1,6 +1,5 @@
 const appConfig = {
   eventsURL: "https://vatboard.estassinos.com/getevents.php",
-  clientsURL: "https://vatboard.estassinos.com/getpilots.php",
   metarURL: "https://vatboard.estassinos.com/getmetar.php?icao=",
   atcURL: "https://vatboard.estassinos.com/getdata.php?type=ATC",
   pilotsURL: "https://vatboard.estassinos.com/getdata.php?type=PILOT",

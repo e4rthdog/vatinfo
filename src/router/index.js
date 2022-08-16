@@ -41,8 +41,6 @@ export default route(function ({ store }) {
       await cfgStore.authAction(cfgStore.previousIdent);
     }
 
-    console.log(`beforeEach: ${cfgStore.isAuthenticated}, ${to.name}`);
-
     if (to.name !== "Login" && !cfgStore.isAuthenticated) {
       return { name: "Login" };
     }

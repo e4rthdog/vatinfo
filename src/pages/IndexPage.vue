@@ -1,3 +1,5 @@
+//TODO Add spinner on loading/saving from API (metars, friends)
+//TODO Add functionality to see next days events
 <template>
   <q-page class="q-ma-md">
     <div class="row">

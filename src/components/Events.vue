@@ -1,5 +1,5 @@
 <script setup>
-import { ref, inject } from "vue";
+import { ref } from "vue";
 import { date } from "quasar";
 import appConfig from "src/config";
 

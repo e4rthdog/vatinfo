@@ -8,6 +8,7 @@ const cfgStore = useVatinfoStore();
 const onlineCIDS = ref([]);
 const dlgManage = ref(false);
 const txtCID = ref()
+const allClients = inject('allClients');
 
 
 const loadCID = async () => {
@@ -15,46 +16,59 @@ const loadCID = async () => {
   await getOnlineCids();
 }
 
-function formAddCID() {
+async function formAddCID() {
   cfgStore.$patch((state) => {
     state.arrCIDS.push(txtCID.value.toUpperCase());
   });
   txtCID.value = '';
+  await getOnlineCids();
 }
 
 function formClearCID() {
   cfgStore.$patch((state) => {
     state.arrCIDS = []
   });
+  onlineCIDS.value = [];
 }
 
-function formRemoveCID() {
+async function formRemoveCID() {
   cfgStore.removeCID(txtCID.value.toUpperCase());
   txtCID.value = ''
+  await getOnlineCids();
 }
 
-async function getOnlineCids() {
-  onlineCIDS.value = []
-  cfgStore.arrCIDS.forEach(async (c) => {
-    if (!isNaN(c)) {
-      await fetch(appConfig.cidURL + '&q=' + c +
-        "&nonce=" +
-        date.formatDate(Date.now(), "YYMMDDHHmmssSS"))
-        .then((response) => response.json())
-        .then((data) => {
-          onlineCIDS.value = onlineCIDS.value.concat(data);
-        })
-    } else {
-      await fetch(appConfig.callsignURL + '&q=' + c +
-        "&nonce=" +
-        date.formatDate(Date.now(), "YYMMDDHHmmssSS"))
-        .then((response) => response.json())
-        .then((data) => {
-          onlineCIDS.value = onlineCIDS.value.concat(data);
-        })
-    }
+
+const getOnlineCids = async () => {
+  onlineCIDS.value = [];
+  cfgStore.arrCIDS.forEach((cid) => {
+    let results = allClients.value.filter((client) => client.callsign.startsWith(cid) || client.cid === cid)
+    console.log(cid + '->' + results.length)
+    onlineCIDS.value = onlineCIDS.value.concat(results)
   })
 }
+
+// async function getOnlineCids() {
+//   onlineCIDS.value = []
+//   cfgStore.arrCIDS.forEach(async (c) => {
+//     if (!isNaN(c)) {
+//       await fetch(appConfig.cidURL + '&q=' + c +
+//         "&nonce=" +
+//         date.formatDate(Date.now(), "YYMMDDHHmmssSS"))
+//         .then((response) => response.json())
+//         .then((data) => {
+//           onlineCIDS.value = onlineCIDS.value.concat(data);
+//         })
+//     } else {
+//       await fetch(appConfig.callsignURL + '&q=' + c +
+//         "&nonce=" +
+//         date.formatDate(Date.now(), "YYMMDDHHmmssSS"))
+//         .then((response) => response.json())
+//         .then((data) => {
+//           onlineCIDS.value = onlineCIDS.value.concat(data);
+//         })
+//     }
+//   })
+// }
 
 
 defineExpose({ getOnlineCids });
@@ -111,12 +125,12 @@ defineExpose({ getOnlineCids });
   </q-card>
 
   <q-dialog v-model="dlgManage" persistent transition-show="scale" transition-hide="scale">
-    <q-card>
-      <q-card-section class="bg-grey-3 ">
+    <q-card style="width:300px;">
+      <q-card-section class="bg-grey-3">
         <div>Manage CIDs to track Online Status</div>
       </q-card-section>
-      <q-card-section>
-        <div class="col-12 col-lg-7">
+      <q-card-section class="q-pa-xs">
+        <div class="col-12 col-lg-7 q-ma-xs">
           <q-input id="txtCID" @keypress.enter="formAddCID()" color="positive" v-model.trim="txtCID" label="CID" dense>
             <template v-slot:prepend>
               <q-icon name="people" />
@@ -125,8 +139,8 @@ defineExpose({ getOnlineCids });
 
         </div>
 
-        <div class="col-12 col-lg-7">
-          <q-btn-group push :stretch="false" class="q-ma-md">
+        <div class="col-12 col-lg-7 text-center">
+          <q-btn-group push :stretch="false" class="q-mt-sm ">
             <q-btn @click="formAddCID()" label="Add" color="primary" class="footer-text" />
             <q-btn @click="formRemoveCID()" label="Remove" color="primary" class="footer-text" />
             <q-btn @click="formClearCID()" label="Clear" color="negative" class="footer-text" />
@@ -149,7 +163,7 @@ defineExpose({ getOnlineCids });
         </div>
 
       </q-card-section>
-      <q-card-section>
+      <q-card-section style="height:150px;overflow-y: auto;">
         <div v-for="(f, index) in cfgStore.arrCIDS" :key="index">
           <span>{{ f }}</span>
         </div>
