@@ -67,7 +67,7 @@ defineExpose({ refreshAllMetars })
             <q-btn @click="updatePanel()" label="Get it" color="primary" class="footer-text" />
             <q-btn @click="refreshAllMetars()" label="Refresh" color="info" class="footer-text" />
             <q-btn @click="clearMetars()" label="Clear" color="negative" class="footer-text" />
-            <q-btn-dropdown color="primary" icon="import_export" class="footer-text">
+            <q-btn-dropdown color="primary" icon="save" class="footer-text">
               <q-list>
                 <q-item clickable v-close-popup @click="loadMetars()">
                   <q-item-section>

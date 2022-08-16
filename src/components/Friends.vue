@@ -42,34 +42,9 @@ const getOnlineCids = async () => {
   onlineCIDS.value = [];
   cfgStore.arrCIDS.forEach((cid) => {
     let results = allClients.value.filter((client) => client.callsign.startsWith(cid) || client.cid === cid)
-    console.log(cid + '->' + results.length)
     onlineCIDS.value = onlineCIDS.value.concat(results)
   })
 }
-
-// async function getOnlineCids() {
-//   onlineCIDS.value = []
-//   cfgStore.arrCIDS.forEach(async (c) => {
-//     if (!isNaN(c)) {
-//       await fetch(appConfig.cidURL + '&q=' + c +
-//         "&nonce=" +
-//         date.formatDate(Date.now(), "YYMMDDHHmmssSS"))
-//         .then((response) => response.json())
-//         .then((data) => {
-//           onlineCIDS.value = onlineCIDS.value.concat(data);
-//         })
-//     } else {
-//       await fetch(appConfig.callsignURL + '&q=' + c +
-//         "&nonce=" +
-//         date.formatDate(Date.now(), "YYMMDDHHmmssSS"))
-//         .then((response) => response.json())
-//         .then((data) => {
-//           onlineCIDS.value = onlineCIDS.value.concat(data);
-//         })
-//     }
-//   })
-// }
-
 
 defineExpose({ getOnlineCids });
 </script>
@@ -144,7 +119,7 @@ defineExpose({ getOnlineCids });
             <q-btn @click="formAddCID()" label="Add" color="primary" class="footer-text" />
             <q-btn @click="formRemoveCID()" label="Remove" color="primary" class="footer-text" />
             <q-btn @click="formClearCID()" label="Clear" color="negative" class="footer-text" />
-            <q-btn-dropdown color="primary" icon="import_export" class="footer-text">
+            <q-btn-dropdown color="primary" icon="save" class="footer-text">
               <q-list>
                 <q-item clickable v-close-popup @click="loadCID()">
                   <q-item-section>
@@ -165,10 +140,10 @@ defineExpose({ getOnlineCids });
       </q-card-section>
       <q-card-section style="height:150px;overflow-y: auto;">
         <div v-for="(f, index) in cfgStore.arrCIDS" :key="index">
-          <span>{{ f }}</span>
+          <span style="font-size:0.8rem;">{{ f }}</span>
         </div>
       </q-card-section>
-      <q-card-actions align=" right" class="positive text-teal">
+      <q-card-actions align="right" class="positive text-teal bg-grey-3">
         <q-btn flat label="Close" v-close-popup />
       </q-card-actions>
     </q-card>
