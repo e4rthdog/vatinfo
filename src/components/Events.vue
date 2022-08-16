@@ -19,6 +19,7 @@ function eventAirports(e) {
     <q-card-section class="bg-primary text-white">
       <q-icon name="event" size="1.5rem" class="q-mr-sm" />
       <span>Events</span>
+      <q-badge color="orange" class="q-mx-sm">{{ listEvents.length }}</q-badge>
       <q-btn-toggle v-model="selectEvents" size="sm" push text-color="black" color="white" toggle-text-color="white"
         toggle-color="positive" class="float-right" :options="[
           { label: 'Today', value: 0 },

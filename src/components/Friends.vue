@@ -114,7 +114,8 @@ defineExpose({ getOnlineCids });
       </q-card-section>
       <q-card-section class="q-pa-xs">
         <div class="col-12 col-lg-7 q-ma-xs">
-          <q-input id="txtCID" @keypress.enter="formAddCID()" color="positive" v-model.trim="txtCID" label="CID" dense>
+          <q-input id="txtCID" @keypress.enter="formAddCID()" color="positive" v-model.trim="txtCID"
+            label="CID, Callsign (Pilot), Callsign* (ATC)" dense>
             <template v-slot:prepend>
               <q-icon name="people" />
             </template>
