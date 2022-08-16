@@ -39,9 +39,16 @@ async function formRemoveCID() {
 
 
 const getOnlineCids = async () => {
+  console.log(allClients.value)
   onlineCIDS.value = [];
   cfgStore.arrCIDS.forEach((cid) => {
-    let results = allClients.value.filter((client) => client.callsign.startsWith(cid) || client.cid === cid)
+    let results = allClients.value.filter((client) => {
+      if (client.clienttype === 'ATC') {
+        return client.callsign.startsWith(cid) || client.cid === cid
+      } else {
+        return client.callsign == cid || client.cid === cid
+      }
+    })
     onlineCIDS.value = onlineCIDS.value.concat(results)
   })
 }
