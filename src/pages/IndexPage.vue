@@ -53,7 +53,6 @@ provide('allEvents', allEvents)
 async function updateData() {
   $q.loading.show({ message: "Fetching Events,CIDs ...", spinner: QSpinnerGears })
   await getClients();
-  // await eventsRef.value.getEvents();
   await getEvents();
   await friendsRef.value.getOnlineCids();
   $q.loading.show({ message: "Refreshing METARs ...", spinner: QSpinnerGears })

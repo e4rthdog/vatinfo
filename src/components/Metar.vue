@@ -5,7 +5,6 @@ import { useVatinfoStore } from "src/stores/vatinfo-store";
 import appConfig from "src/config";
 
 const cfgStore = useVatinfoStore();
-const isFetching = ref(false);
 const txtICAO = ref("");
 const arrMetarsSorted = computed(() => cfgStore.arrMetars.sort((a, b) => (a.icao > b.icao) ? 1 : -1));
 const $q = useQuasar();

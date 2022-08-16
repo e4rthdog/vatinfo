@@ -64,10 +64,11 @@ export const useVatinfoStore = defineStore("vatinfo", () => {
 
   const authAction = async (loginFormIdent = "") => {
     if (loginFormIdent !== "") {
-      ident.value = previousIdent.value = loginFormIdent;
+      ident.value = loginFormIdent;
+      previousIdent.value = loginFormIdent;
       identDBdATA.value = await loadIdentDataAPI();
       localStorage.setItem("ident", loginFormIdent);
-      localStorage.setItem("previousIdent", loginFormIdent);
+      localStorage.setItem("previousident", loginFormIdent);
     } else {
       ident.value = "";
       identDBdATA.value = [];
