@@ -41,8 +41,8 @@ function formClearCID() {
   onlineCIDS.value = [];
 }
 
-async function formRemoveCID() {
-  cfgStore.removeCID(txtCID.value.toUpperCase());
+async function formRemoveCID(toRemove = txtCID.value.toUpperCase()) {
+  cfgStore.removeCID(toRemove);
   txtCID.value = ''
   await getOnlineCids();
 }
@@ -156,9 +156,14 @@ defineExpose({ getOnlineCids });
         </div>
 
       </q-card-section>
-      <q-card-section style="height:150px;overflow-y: auto;">
-        <div v-for="(f, index) in cfgStore.arrCIDS" :key="index">
-          <span style="font-size:0.8rem;">{{ f }}</span>
+      <q-card-section style="height:200px;overflow-y: auto;" class="q-ma-none q-pa-xs">
+        <div v-for="(f, index) in cfgStore.arrCIDS" :key="index" class="column inline">
+          <q-chip dense square color="blue-grey-2" class="q-ma-xs">
+            {{ f }}
+            <q-badge text-color="white" class="transparent">
+              <q-btn dense color="negative" size="0.4rem" icon="clear" class="q-mx-none" @click="formRemoveCID(f)" />
+            </q-badge>
+          </q-chip>
         </div>
       </q-card-section>
       <q-card-actions align="right" class="positive text-teal bg-grey-3">
