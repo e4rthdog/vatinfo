@@ -32,10 +32,8 @@
       <q-toolbar>
         <q-toolbar-title class="footer-text text-center">
           Made with Quasar
-          <q-badge outline color="white">{{ $q.version }}</q-badge> - Running on
-          {{ $q.platform.is.name }},
-          <q-badge outline color="white">v{{ $q.platform.is.version }}</q-badge>
-          <q-badge outline color="white">v</q-badge>
+          <q-badge outline color="white">{{ $q.version }}</q-badge> - App version:
+          <q-badge outline color="white">v{{ version.gitVersion }}</q-badge>
         </q-toolbar-title>
       </q-toolbar>
     </q-footer>
@@ -47,6 +45,7 @@ import { ref, onMounted, provide } from 'vue';
 import { date } from "quasar";
 import { useVatinfoStore } from 'src/stores/vatinfo-store';
 import { useRouter } from 'vue-router';
+import version from '../version.js'
 
 const router = useRouter();
 const cfgStore = useVatinfoStore();

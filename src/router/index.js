@@ -36,7 +36,6 @@ export default route(function ({ store }) {
 
   Router.beforeEach(async (to, from) => {
     const cfgStore = useVatinfoStore(store);
-    console.log(cfgStore.previousIdent);
     if (cfgStore.previousIdent != "" && cfgStore.previousIdent != null) {
       await cfgStore.authAction(cfgStore.previousIdent);
     }
