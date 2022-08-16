@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { ref, inject, computed, reactive } from "vue";
 import { date } from "quasar";
 import appConfig from "src/config";
+import _ from "lodash";
 
 export const useVatinfoStore = defineStore("vatinfo", () => {
   const ident = ref("");
@@ -10,7 +11,7 @@ export const useVatinfoStore = defineStore("vatinfo", () => {
   const arrMetars = ref([]);
   const arrCIDS = ref([]);
   const isAuthenticated = computed(() => {
-    return ident.value === "" ? false : true;
+    return ident.value === "" || !ident ? false : true;
   });
 
   const saveMetarsDB = async (v) => {
@@ -52,6 +53,11 @@ export const useVatinfoStore = defineStore("vatinfo", () => {
   const clearMetars = () => {
     arrMetars.value = [];
   };
+
+  const removeMetar = (metar) => {
+    _.remove(arrMetars.value, (n) => n.icao == metar);
+  };
+
   const removeCID = (toRemove) => {
     arrCIDS.value = arrCIDS.value.filter((r) => r != toRemove);
   };
@@ -66,7 +72,7 @@ export const useVatinfoStore = defineStore("vatinfo", () => {
       ident.value = "";
       identDBdATA.value = [];
       localStorage.setItem("previousident", previousIdent.value);
-      localStorage.setItem("ident", "");
+      localStorage.setItem("ident", ident.value);
     }
   };
 
@@ -102,6 +108,7 @@ export const useVatinfoStore = defineStore("vatinfo", () => {
     removeCID,
     clearMetars,
     saveCIDDB,
+    removeMetar,
     ident,
     identDBdATA,
     isAuthenticated,

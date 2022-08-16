@@ -1,4 +1,3 @@
-//TODO Add remove option
 <script setup>
 import { ref, inject, onMounted, computed, watch } from "vue";
 import { useQuasar, QSpinnerGears, date, QSpinnerHourglass } from "quasar";
@@ -104,7 +103,13 @@ defineExpose({ refreshAllMetars })
             </thead>
             <tbody>
               <tr v-for="(m, index) in arrMetarsSorted" :key="index">
-                <td>{{ m.metar }} </td>
+                <td>
+                  {{ m.metar }}
+                  <q-badge text-color="white" class="transparent">
+                    <q-btn dense color="negative" size="0.4rem" icon="clear" class="q-mx-none"
+                      @click="cfgStore.removeMetar(m.icao)" />
+                  </q-badge>
+                </td>
               </tr>
             </tbody>
           </q-markup-table>

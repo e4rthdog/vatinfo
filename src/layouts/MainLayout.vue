@@ -62,8 +62,8 @@ const updateRefreshTime = () => {
   lastRefresh.value = currentTime.value
 }
 
-const logout = () => {
-  cfgStore.authAction();
+const logout = async () => {
+  await cfgStore.authAction();
   router.push('/login')
 }
 provide('updateRefreshTime', updateRefreshTime)

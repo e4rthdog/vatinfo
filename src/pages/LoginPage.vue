@@ -1,5 +1,4 @@
 //BUG: First time pressing enter does nothing
-//TODO Beautify me
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useVatinfoStore } from 'src/stores/vatinfo-store';
@@ -31,7 +30,7 @@ onMounted(() => {
         </q-card-section>
         <q-card-section>
           <q-form class="q-gutter-md">
-            <q-input id="txtMetar" @keypress.enter="login" color="positive" v-model.trim="txtIdent" dense
+            <q-input id="txtMetar" @keypress.enter="login()" color="positive" v-model.trim="txtIdent" dense
               label="config ID">
               <template v-slot:prepend>
                 <q-icon name="badge" />
@@ -42,7 +41,7 @@ onMounted(() => {
         <q-card-actions class="q-px-md justify-center">
           <span class="q-ma-sm">A unique identification under which we save favorite callsings, metars e.t.c. Use
             something unique to you cause there is no password protection</span>
-          <q-btn unelevated color="positive" size="md" class="full-width" label="Continue" @click="login" />
+          <q-btn unelevated color="positive" size="md" class="full-width" label="Continue" @click="login()" />
         </q-card-actions>
       </q-card>
     </div>
