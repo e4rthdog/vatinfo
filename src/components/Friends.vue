@@ -3,6 +3,7 @@ import { ref, inject, computed, onMounted } from "vue";
 import { date } from "quasar";
 import { useVatinfoStore } from "src/stores/vatinfo-store";
 import appConfig from "src/config";
+import _ from 'lodash';
 
 const cfgStore = useVatinfoStore();
 const onlineCIDS = ref([]);
@@ -39,7 +40,6 @@ async function formRemoveCID() {
 
 
 const getOnlineCids = async () => {
-  console.log(allClients.value)
   onlineCIDS.value = [];
   cfgStore.arrCIDS.forEach((cid) => {
     let results = allClients.value.filter((client) => {
@@ -51,6 +51,7 @@ const getOnlineCids = async () => {
     })
     onlineCIDS.value = onlineCIDS.value.concat(results)
   })
+  onlineCIDS.value = _.uniq(onlineCIDS.value);
 }
 
 defineExpose({ getOnlineCids });
