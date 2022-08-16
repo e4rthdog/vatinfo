@@ -33,7 +33,6 @@ function eventAirports(e) {
           <tr class="bg-grey-1">
             <th class="text-left">Event Name</th>
             <th>Start(LT)</th>
-            <th>End(LT)</th>
             <th>Airports</th>
           </tr>
         </thead>
@@ -44,8 +43,9 @@ function eventAirports(e) {
                 <q-icon name="open_in_new" />
               </a>
             </td>
-            <td>{{ date.formatDate(new Date(e.start_time), "HH:mm") }}</td>
-            <td>{{ date.formatDate(new Date(e.end_time), "HH:mm") }}</td>
+            <td>{{ date.formatDate(new Date(e.start_time), "ddd DD/MM/YY HH:mm") }}-{{ date.formatDate(new
+                Date(e.end_time), "HH:mm")
+            }}</td>
             <td>{{ eventAirports(e) }}</td>
           </tr>
         </tbody>
