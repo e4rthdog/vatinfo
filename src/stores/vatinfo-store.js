@@ -5,7 +5,7 @@ import appConfig from "src/config";
 
 export const useVatinfoStore = defineStore("vatinfo", () => {
   const ident = ref("");
-  const previousIdent = ref("");
+  const previousIdent = ref(localStorage.getItem("previousident"));
   const identDBdATA = ref([]);
   const arrMetars = ref([]);
   const arrCIDS = ref([]);
@@ -29,7 +29,6 @@ export const useVatinfoStore = defineStore("vatinfo", () => {
         body: JSON.stringify({ data: v }),
       }
     ).then((r) => r.json());
-    console.log(response);
   };
 
   const saveCIDDB = async (v) => {
@@ -48,7 +47,6 @@ export const useVatinfoStore = defineStore("vatinfo", () => {
         body: JSON.stringify({ data: v }),
       }
     ).then((r) => r.json());
-    console.log(response);
   };
 
   const clearMetars = () => {
@@ -57,7 +55,7 @@ export const useVatinfoStore = defineStore("vatinfo", () => {
   const removeCID = (toRemove) => {
     arrCIDS.value = arrCIDS.value.filter((r) => r != toRemove);
   };
-
+  //BUG: previousident is blank?
   const authAction = async (loginFormIdent = "") => {
     if (loginFormIdent !== "") {
       ident.value = previousIdent.value = loginFormIdent;
@@ -65,7 +63,7 @@ export const useVatinfoStore = defineStore("vatinfo", () => {
       localStorage.setItem("ident", loginFormIdent);
       localStorage.setItem("previousIdent", loginFormIdent);
     } else {
-      ident.value = previousIdent.value = "";
+      ident.value = "";
       identDBdATA.value = [];
       localStorage.setItem("previousident", previousIdent.value);
       localStorage.setItem("ident", "");

@@ -34,10 +34,13 @@ export default route(function ({ store }) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   });
 
-  const cfgStore = useVatinfoStore();
-  console.log(cfgStore.ident);
+  Router.beforeEach(async (to, from) => {
+    const cfgStore = useVatinfoStore(store);
 
-  Router.beforeEach((to, from) => {
+    if (cfgStore.previousIdent != "") {
+      await cfgStore.authAction(cfgStore.previousIdent);
+    }
+
     console.log(`beforeEach: ${cfgStore.isAuthenticated}, ${to.name}`);
 
     if (to.name !== "Login" && !cfgStore.isAuthenticated) {

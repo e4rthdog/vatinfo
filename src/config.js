@@ -1,7 +1,6 @@
 const appConfig = {
   eventsURL: "https://vatboard.estassinos.com/getevents.php",
   clientsURL: "https://vatboard.estassinos.com/getpilots.php",
-  cidsURL: "https://vatboard.estassinos.com/getcids.php?cids=",
   metarURL: "https://vatboard.estassinos.com/getmetar.php?icao=",
   atcURL: "https://vatboard.estassinos.com/getdata.php?type=ATC",
   pilotsURL: "https://vatboard.estassinos.com/getdata.php?type=PILOT",
@@ -10,7 +9,7 @@ const appConfig = {
   serversURL: "https://vatboard.estassinos.com/getdata.php?type=SERVERS",
   callsignURL: "https://vatboard.estassinos.com/getdata.php?type=CALLSIGN&q=",
   clientsURL: "https://vatboard.estassinos.com/getdata.php?type=ALL",
-  apiURL: "http://vatboard.estassinos.com",
+  apiURL: "https://vatboard.estassinos.com",
   // friendsCID:
   //   "1041728,837997,819311,810670,810309,898093,827599,1463640,1378014,963239,1008143",
   status: {
