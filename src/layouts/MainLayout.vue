@@ -35,6 +35,7 @@
           <q-badge outline color="white">{{ $q.version }}</q-badge> - Running on
           {{ $q.platform.is.name }},
           <q-badge outline color="white">v{{ $q.platform.is.version }}</q-badge>
+          <q-badge outline color="white">v</q-badge>
         </q-toolbar-title>
       </q-toolbar>
     </q-footer>
