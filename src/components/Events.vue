@@ -1,9 +1,10 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch, inject, computed } from "vue";
 import { date } from "quasar";
-import appConfig from "src/config";
 
-const todaysEvents = ref([]);
+const allEvents = inject('allEvents', []);
+const listEvents = computed(() => allEvents.value.filter((e) => Math.abs(date.getDateDiff(Date.now(), e.start_time, "days")) <= selectEvents.value ? true : false));
+const selectEvents = ref(0);
 
 function eventAirports(e) {
   let airports = "";
@@ -11,25 +12,19 @@ function eventAirports(e) {
   return airports;
 }
 
-async function getEvents() {
-  await fetch(appConfig.eventsURL + '?nonce=' + date.formatDate(Date.now(), 'YYMMDDHHmmssSS'))
-    .then((ret) => ret.json())
-    .then((json) => {
-      todaysEvents.value = json.data.filter((e) =>
-        date.getDateDiff(Date.now(), e.start_time, "days") == 0 ? true : false
-      );
-    });
-}
-
-defineExpose({ getEvents });
 </script>
-
 
 <template>
   <q-card>
     <q-card-section class="bg-primary text-white">
       <q-icon name="event" size="1.5rem" class="q-mr-sm" />
-      <span>Current Events</span>
+      <span>Events</span>
+      <q-btn-toggle v-model="selectEvents" size="sm" push text-color="black" color="white" toggle-text-color="white"
+        toggle-color="positive" class="float-right" :options="[
+          { label: 'Today', value: 0 },
+          { label: '+1', value: 1 },
+          { label: '+7', value: 7 }
+        ]" />
     </q-card-section>
     <q-separator />
     <q-card-section>
@@ -43,7 +38,7 @@ defineExpose({ getEvents });
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(e, index) in todaysEvents" :key="index">
+          <tr v-for="(e, index) in listEvents" :key="index">
             <td class="text-left">
               <a class="link-no-decoration text-black" :href="e.link" target="_blank">{{ e.name }}
                 <q-icon name="open_in_new" />

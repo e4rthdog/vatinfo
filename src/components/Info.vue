@@ -72,7 +72,6 @@ import { date } from "quasar";
 import appConfig
   from "src/config";
 const allClients = inject('allClients');
-const todaysEvents = ref([]);
 const tabName = ref('ctr');
 
 

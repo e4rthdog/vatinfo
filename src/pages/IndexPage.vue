@@ -1,5 +1,6 @@
 //TODO Add spinner on loading/saving from API (metars, friends)
 //TODO Add functionality to see next days events
+//TODO Add version indication
 <template>
   <q-page class="q-ma-md">
     <div class="row">
@@ -42,18 +43,22 @@ const friendsRef = ref();
 const metarRef = ref();
 const infoRef = ref();
 const allClients = ref([]);
+const allEvents = ref([]);
 
 provide('updateData', updateData);
 provide('allClients', allClients)
+provide('getEvents', getEvents)
+provide('allEvents', allEvents)
 
 async function updateData() {
   $q.loading.show({ message: "Fetching Events,CIDs ...", spinner: QSpinnerGears })
-  await eventsRef.value.getEvents();
+  await getClients();
+  // await eventsRef.value.getEvents();
+  await getEvents();
   await friendsRef.value.getOnlineCids();
   $q.loading.show({ message: "Refreshing METARs ...", spinner: QSpinnerGears })
   await metarRef.value.refreshAllMetars();
   $q.loading.show({ message: "Refreshing INFO ...", spinner: QSpinnerGears })
-  await getClients();
   $q.loading.hide();
   updateRefreshTime();
 }
@@ -62,6 +67,12 @@ async function getClients() {
   await fetch(appConfig.clientsURL + '&' + date.formatDate(Date.now(), 'YYMMDDHHmmssSS'))
     .then((ret) => ret.json())
     .then((m) => allClients.value = m);
+}
+
+async function getEvents() {
+  await fetch(appConfig.eventsURL + '?nonce=' + date.formatDate(Date.now(), 'YYMMDDHHmmssSS'))
+    .then((ret) => ret.json())
+    .then((json) => allEvents.value = json.data);
 }
 onMounted(async () => {
   updateData();

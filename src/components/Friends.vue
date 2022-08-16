@@ -53,7 +53,7 @@ defineExpose({ getOnlineCids });
   <q-card style="height: 100%">
     <q-card-section class="bg-primary text-white">
       <q-icon name="people" size="1.5rem" class="q-mr-sm" />
-      <span>Online CIDs</span>
+      <span>Tracked Members</span>
       <q-btn label="Manage" icon="manage_accounts" size="sm" color="positive" class="float-right"
         @click="dlgManage = true;"></q-btn>
     </q-card-section>
