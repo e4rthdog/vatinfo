@@ -25,13 +25,13 @@ onMounted(() => {
 <template>
   <div class="bg-blue-3 window-height window-width row justify-center items-center">
     <div class="row">
-      <q-card id="login-form-card" square bordered class="q-pa-md shadow-3">
-        <q-card-section class="">
+      <q-card id="login-form-card" square bordered class="q-pa-sm shadow-3">
+        <q-card-section class="q-pa-none">
           <div class="row justify-center">
             <p class="text-h5 q-my-xs">VATINFO</p>
           </div>
         </q-card-section>
-        <q-card-section>
+        <q-card-section class="q-pa-md">
           <q-form class="q-gutter-md">
             <q-input id="txtMetar" @keypress.enter.prevent="login()" color="positive" v-model.trim="txtIdent" dense
               label="config ID">
@@ -42,8 +42,10 @@ onMounted(() => {
           </q-form>
         </q-card-section>
         <q-card-actions class="q-px-md justify-center">
-          <span class="q-ma-sm">A unique identification under which we save favorite callsings, metars e.t.c. Use
-            something unique to you cause there is no password protection</span>
+          <span class="q-ma-sm footer-text text-center">A unique identification under which we save favorite settings.No
+            password protection</span>
+          <p class="footer-text text-center">Information provided are publicly available from VATSIM.</p>
+          <p class="footer-text text-center">VATINFO keep no personal data.</p>
           <q-btn unelevated color="positive" size="md" class="full-width" label="Continue" @click="login()" />
         </q-card-actions>
       </q-card>
