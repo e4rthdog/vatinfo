@@ -14,7 +14,8 @@ async function getMetar(icao = txtICAO.value.toUpperCase()) {
     .then((ret) => ret.text())
     .then((m) => {
       return { icao: icao, metar: m };
-    });
+    })
+    .catch((error) => { console.log(`getMetar -> ${error}`) });
 }
 
 async function refreshAllMetars() {

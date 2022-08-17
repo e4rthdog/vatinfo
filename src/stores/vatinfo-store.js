@@ -29,7 +29,11 @@ export const useVatinfoStore = defineStore("vatinfo", (router) => {
         },
         body: JSON.stringify({ data: v }),
       }
-    ).then((r) => r.json());
+    )
+      .then((r) => r.json())
+      .catch((error) => {
+        console.log(`saveMetarsDB -> ${error}`);
+      });
   };
 
   const saveCIDDB = async (v) => {
@@ -47,7 +51,11 @@ export const useVatinfoStore = defineStore("vatinfo", (router) => {
         },
         body: JSON.stringify({ data: v }),
       }
-    ).then((r) => r.json());
+    )
+      .then((r) => r.json())
+      .catch((error) => {
+        console.log(`saveCIDDB -> ${error}`);
+      });
   };
 
   const clearMetars = () => {
@@ -100,6 +108,9 @@ export const useVatinfoStore = defineStore("vatinfo", (router) => {
           }
           return m.records;
         });
+      })
+      .catch((error) => {
+        console.log(`loadIdentDataAPI -> ${error}`);
       });
   };
 
