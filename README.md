@@ -1,24 +1,34 @@
-# VATINFO (vatinfo-quasar)
+# VATINFO
 
-VATINFO Panels
+A web app that provides VATSIM inforamtion in panel-like layout.
+
+See the [WIKI](https://github.com/e4rthdog/vatinfo/wiki) pages for help and instructions.
 
 ## Install the dependencies
+
 ```bash
-yarn
-# or
 npm install
 ```
 
 ### Start the app in development mode (hot-code reloading, error reporting, etc.)
+
 ```bash
 quasar dev
 ```
 
-
 ### Build the app for production
+
 ```bash
 quasar build
 ```
 
-### Customize the configuration
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
+## Customize the configuration
+
+---
+
+Configuration file : `config.sys`
+
+The file contains the endpoints for the api calls.
+Head over to [VATINFO API](https://github.com/e4rthdog/vatinfo-api) project if you want to create your own endpoints. The API is quick dirty for now in order to get VATINFO working. Will probably change it in the future to a laravel project.
+
+Cahnge `refreshInterval` to control the time between automatic updates.
