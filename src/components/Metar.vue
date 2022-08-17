@@ -8,6 +8,7 @@ const cfgStore = useVatinfoStore();
 const txtICAO = ref("");
 const arrMetarsSorted = computed(() => cfgStore.arrMetars.sort((a, b) => (a.icao > b.icao) ? 1 : -1));
 const $q = useQuasar();
+const panelVisible = ref(true)
 
 async function getMetar(icao = txtICAO.value.toUpperCase()) {
   return await fetch(appConfig.metarURL + icao + '&nonce=' + date.formatDate(Date.now(), 'YYMMDDHHmmssSS'))
@@ -58,63 +59,69 @@ defineExpose({ refreshAllMetars })
     <q-card-section class="bg-primary text-white">
       <q-icon name="people" size="1.5rem" class="q-mr-sm" />
       <span>METAR Info</span>
+      <q-toggle v-model="panelVisible" label="" checked-icon="visibility" unchecked-icon="visibility_off"
+        color="positive" class="q-mb-md float-right" />
     </q-card-section>
     <q-separator />
-    <q-card-section>
-      <div class="row items-center">
-        <div class="col-12 col-lg-5">
-          <q-input id="txtMetar" @keypress.enter="updatePanel()" color="positive" v-model.trim="txtICAO" dense
-            label="Airport ICAO">
-            <template v-slot:prepend>
-              <q-icon name="flight_takeoff" />
-            </template>
-          </q-input>
-        </div>
-        <div class="col-12 col-lg-7">
-          <q-btn-group push :stretch="false" class="q-ma-md">
-            <q-btn @click="updatePanel()" label="Get it" color="primary" class="footer-text" />
-            <q-btn @click="refreshAllMetars()" label="Refresh" color="info" class="footer-text" />
-            <q-btn @click="clearMetars()" label="Clear" color="negative" class="footer-text" />
-            <q-btn-dropdown color="primary" icon="save" class="footer-text">
-              <q-list>
-                <q-item clickable v-close-popup @click="loadMetars()">
-                  <q-item-section>
-                    <q-item-label>Load</q-item-label>
-                  </q-item-section>
-                </q-item>
+    <q-slide-transition>
+      <div v-show="panelVisible">
+        <q-card-section>
+          <div class="row items-center">
+            <div class="col-12 col-lg-5">
+              <q-input id="txtMetar" @keypress.enter="updatePanel()" color="positive" v-model.trim="txtICAO" dense
+                label="Airport ICAO">
+                <template v-slot:prepend>
+                  <q-icon name="flight_takeoff" />
+                </template>
+              </q-input>
+            </div>
+            <div class="col-12 col-lg-7">
+              <q-btn-group push :stretch="false" class="q-ma-md">
+                <q-btn @click="updatePanel()" label="Get it" color="primary" class="footer-text" />
+                <q-btn @click="refreshAllMetars()" label="Refresh" color="info" class="footer-text" />
+                <q-btn @click="clearMetars()" label="Clear" color="negative" class="footer-text" />
+                <q-btn-dropdown color="primary" icon="save" class="footer-text">
+                  <q-list>
+                    <q-item clickable v-close-popup @click="loadMetars()">
+                      <q-item-section>
+                        <q-item-label>Load</q-item-label>
+                      </q-item-section>
+                    </q-item>
 
-                <q-item clickable v-close-popup @click="saveMetarsPanel()">
-                  <q-item-section>
-                    <q-item-label>Save</q-item-label>
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </q-btn-dropdown>
-          </q-btn-group>
-        </div>
+                    <q-item clickable v-close-popup @click="saveMetarsPanel()">
+                      <q-item-section>
+                        <q-item-label>Save</q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-btn-dropdown>
+              </q-btn-group>
+            </div>
+          </div>
+          <div class="row bg-yellow-1 q-mt-md" style="font-size:0.8rem;">
+            <div class="col-12" style="max-height:400px;overflow:auto;">
+              <q-markup-table bordered dense flat wrap-cells class="full-width text-left">
+                <thead class="bg-grey-1">
+                  <tr>
+                    <th>METAR</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(m, index) in arrMetarsSorted" :key="index">
+                    <td>
+                      {{ m.metar }}
+                      <q-badge text-color="white" class="transparent">
+                        <q-btn v-if="m.metar != ''" dense color="negative" size="0.4rem" icon="clear" class="q-mx-none"
+                          @click="cfgStore.removeMetar(m.icao)" />
+                      </q-badge>
+                    </td>
+                  </tr>
+                </tbody>
+              </q-markup-table>
+            </div>
+          </div>
+        </q-card-section>
       </div>
-      <div class="row bg-yellow-1 q-mt-md" style="font-size:0.8rem;">
-        <div class="col-12" style="max-height:400px;overflow:auto;">
-          <q-markup-table bordered dense flat wrap-cells class="full-width text-left">
-            <thead class="bg-grey-1">
-              <tr>
-                <th>METAR</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(m, index) in arrMetarsSorted" :key="index">
-                <td>
-                  {{ m.metar }}
-                  <q-badge text-color="white" class="transparent">
-                    <q-btn v-if="m.metar != ''" dense color="negative" size="0.4rem" icon="clear" class="q-mx-none"
-                      @click="cfgStore.removeMetar(m.icao)" />
-                  </q-badge>
-                </td>
-              </tr>
-            </tbody>
-          </q-markup-table>
-        </div>
-      </div>
-    </q-card-section>
+    </q-slide-transition>
   </q-card>
 </template>
