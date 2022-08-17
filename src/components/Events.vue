@@ -28,7 +28,7 @@ function eventAirports(e) {
         ]" />
     </q-card-section>
     <q-separator />
-    <q-card-section>
+    <q-card-section style="max-height:400px;overflow:auto;">
       <q-markup-table bordered dense flat wrap-cells class="text-center">
         <thead>
           <tr class="bg-grey-1">

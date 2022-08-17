@@ -93,7 +93,7 @@ defineExpose({ refreshAllMetars })
         </div>
       </div>
       <div class="row bg-yellow-1 q-mt-md" style="font-size:0.8rem;">
-        <div class="col-12">
+        <div class="col-12" style="max-height:400px;overflow:auto;">
           <q-markup-table bordered dense flat wrap-cells class="full-width text-left">
             <thead class="bg-grey-1">
               <tr>
