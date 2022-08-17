@@ -106,7 +106,7 @@ defineExpose({ refreshAllMetars })
                 <td>
                   {{ m.metar }}
                   <q-badge text-color="white" class="transparent">
-                    <q-btn dense color="negative" size="0.4rem" icon="clear" class="q-mx-none"
+                    <q-btn v-if="m.metar != ''" dense color="negative" size="0.4rem" icon="clear" class="q-mx-none"
                       @click="cfgStore.removeMetar(m.icao)" />
                   </q-badge>
                 </td>
