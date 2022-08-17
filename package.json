@@ -6,7 +6,7 @@
   "author": "e4rthdog <elias.stassinos@gmail.com>",
   "private": true,
   "scripts": {
-    "test": "echo \"No test specified\" && exit 0"
+    "ver-patch": "npm version patch --no-git-tag-version --force"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
