@@ -6,11 +6,9 @@
           <h1 class="text-weight-400 text-h5 q-ma-none">VATINFO Panels</h1>
         </div>
         <div class="col-12 col-sm-5 text-center q-ma-xs">
-          <q-chip dense square color="blue-grey-2" icon="public">
-            <q-badge color="accent" text-color="white" class="q-mx-sm">{{ currentUTCTime }}z</q-badge>
-          </q-chip>
           <q-chip dense square color="blue-grey-2" icon="home">
-            <q-badge color="accent" text-color="white" class="q-mx-sm">{{ currentTime }}</q-badge>
+            <q-badge color="accent" text-color="white" class="q-mx-sm">{{ currentTime }} / {{ currentUTCTime }}z
+            </q-badge>
           </q-chip>
           <q-chip dense square color="blue-grey-2" icon="published_with_changes">
             <q-badge color="accent" text-color="white" class="q-mx-sm"> {{ lastRefresh }}</q-badge>

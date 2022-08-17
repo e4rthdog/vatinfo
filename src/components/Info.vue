@@ -3,66 +3,73 @@
     <q-card-section class="bg-primary text-white">
       <q-icon name="info" size="1.5rem" class="q-mr-sm" />
       <span>General Info</span>
+      <q-toggle v-model="panelVisible" label="" checked-icon="visibility" unchecked-icon="visibility_off"
+        color="positive" class="q-mb-md float-right" />
     </q-card-section>
     <q-separator />
-    <q-card-section class="q-pa-xs">
-      <div class="row justify-center">
-        <q-chip dense square color="blue-grey-2" icon="travel_explore">
-          Total Clients
-          <q-badge color="positive" text-color="white" class="q-mx-sm">{{ allClients.length }}</q-badge>
-        </q-chip>
-        <q-chip dense square color="blue-grey-2" icon="flight">
-          Pilots
-          <q-badge color="positive" text-color="white" class="q-mx-sm">{{ totalByType['PILOT'] }}</q-badge>
-        </q-chip>
-        <q-chip dense square color="blue-grey-2" icon="settings_input_antenna">
-          ATC
-          <q-badge color="positive" text-color="white" class="q-mx-sm">{{ totalByType['ATC'] }}</q-badge>
-        </q-chip>
+    <q-slide-transition>
+      <div v-show="panelVisible">
+        <q-card-section class="q-pa-xs">
+          <div class="row justify-center">
+            <q-chip dense square color="blue-grey-2" icon="travel_explore">
+              Total Clients
+              <q-badge color="positive" text-color="white" class="q-mx-sm">{{ allClients.length }}</q-badge>
+            </q-chip>
+            <q-chip dense square color="blue-grey-2" icon="flight">
+              Pilots
+              <q-badge color="positive" text-color="white" class="q-mx-sm">{{ totalByType['PILOT'] }}</q-badge>
+            </q-chip>
+            <q-chip dense square color="blue-grey-2" icon="settings_input_antenna">
+              ATC
+              <q-badge color="positive" text-color="white" class="q-mx-sm">{{ totalByType['ATC'] }}</q-badge>
+            </q-chip>
+          </div>
+        </q-card-section>
+
+        <q-card-section class="q-pa-xs">
+          <div class="row" style="max-height:400px;overflow:auto;">
+            <div class="col-12 col-lg-6 q-pa-sm">
+              <p class="text-center q-ma-sm">CTRs Online ({{ totalCTR.length }})</p>
+              <q-markup-table bordered dense flat wrap-cells class="full-width text-left">
+                <thead>
+                  <tr class="bg-grey-1">
+                    <th>Callsign</th>
+                    <th>Name</th>
+                    <th>Since</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(m, index) in totalCTR" :key="index">
+                    <td>{{ m.callsign }} </td>
+                    <td>{{ m.realname }}</td>
+                    <td>{{ m.time_logon_str }}</td>
+                  </tr>
+                </tbody>
+              </q-markup-table>
+            </div>
+            <div class="col-12 col-lg-6 q-pa-sm">
+              <p class="text-center q-ma-sm">APPs Online ({{ totalAPP.length }})</p>
+              <q-markup-table bordered dense flat wrap-cells class="full-width text-left">
+                <thead>
+                  <tr class="bg-grey-1">
+                    <th>Callsign</th>
+                    <th>Name</th>
+                    <th>Since</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(m, index) in totalAPP" :key="index">
+                    <td>{{ m.callsign }} </td>
+                    <td>{{ m.realname }}</td>
+                    <td>{{ m.time_logon_str }}</td>
+                  </tr>
+                </tbody>
+              </q-markup-table>
+            </div>
+          </div>
+        </q-card-section>
       </div>
-    </q-card-section>
-    <q-card-section class="q-pa-xs">
-      <div class="row" style="max-height:400px;overflow:auto;">
-        <div class="col-12 col-lg-6 q-pa-sm">
-          <p class="text-center q-ma-sm">CTRs Online ({{ totalCTR.length }})</p>
-          <q-markup-table bordered dense flat wrap-cells class="full-width text-left">
-            <thead>
-              <tr class="bg-grey-1">
-                <th>Callsign</th>
-                <th>Name</th>
-                <th>Since</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(m, index) in totalCTR" :key="index">
-                <td>{{ m.callsign }} </td>
-                <td>{{ m.realname }}</td>
-                <td>{{ m.time_logon_str }}</td>
-              </tr>
-            </tbody>
-          </q-markup-table>
-        </div>
-        <div class="col-12 col-lg-6 q-pa-sm">
-          <p class="text-center q-ma-sm">APPs Online ({{ totalAPP.length }})</p>
-          <q-markup-table bordered dense flat wrap-cells class="full-width text-left">
-            <thead>
-              <tr class="bg-grey-1">
-                <th>Callsign</th>
-                <th>Name</th>
-                <th>Since</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(m, index) in totalAPP" :key="index">
-                <td>{{ m.callsign }} </td>
-                <td>{{ m.realname }}</td>
-                <td>{{ m.time_logon_str }}</td>
-              </tr>
-            </tbody>
-          </q-markup-table>
-        </div>
-      </div>
-    </q-card-section>
+    </q-slide-transition>
   </q-card>
 </template>
 
@@ -73,6 +80,7 @@ import appConfig
   from "src/config";
 const allClients = inject('allClients');
 const tabName = ref('ctr');
+const panelVisible = ref(true)
 
 
 const totalCTR = computed(() => {
