@@ -43,7 +43,6 @@ const metarRef = ref();
 const infoRef = ref();
 const allClients = ref([]);
 const allEvents = ref([]);
-const isBusy = ref(false);
 
 provide('updateData', updateData);
 provide('allClients', allClients)
