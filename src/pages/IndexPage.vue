@@ -1,3 +1,4 @@
+//FIXME Uncaught (in promise) TypeError: Cannot read properties of null (reading 'getOnlineCids')
 <template>
   <q-page class="q-ma-md">
     <div class="row">
