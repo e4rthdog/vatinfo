@@ -72,7 +72,7 @@ async function getEvents() {
     .then((json) => allEvents.value = json.data);
 }
 onMounted(async () => {
-  updateData();
+  await updateData();
   setInterval(updateData, appConfig.refreshInterval);
 });
 

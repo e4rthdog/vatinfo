@@ -37,15 +37,24 @@ export default route(function ({ store }) {
   Router.beforeEach(async (to, from) => {
     const cfgStore = useVatinfoStore(store);
     console.log(cfgStore.isAuthenticated);
+    console.log(cfgStore.ident);
     console.log(to.name);
-    //Try autologin
-    if (cfgStore.previousident != "" && cfgStore.previousident != null) {
-      await cfgStore.authAction(cfgStore.previousident);
-      return { name: "Root" };
-    }
 
-    if (to.name !== "Login" && !cfgStore.isAuthenticated) {
-      return { name: "Login" };
+    if (cfgStore.isAuthenticated) {
+      //Auto login
+      if (!cfgStore.isLogout) {
+        await cfgStore.authAction(cfgStore.ident);
+      } else {
+        return { name: "Login" };
+      }
+
+      // if (to.name === "Login") {
+      //   return { name: "Root" };
+      // }
+    } else {
+      if (to.name !== "Login") {
+        return { name: "Login" };
+      }
     }
   });
 

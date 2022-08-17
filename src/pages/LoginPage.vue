@@ -14,7 +14,7 @@ const login = async () => {
 }
 
 onMounted(() => {
-  txtIdent.value = cfgStore.previousIdent;
+  txtIdent.value = cfgStore.ident;
 })
 
 </script>
@@ -30,7 +30,7 @@ onMounted(() => {
         </q-card-section>
         <q-card-section>
           <q-form class="q-gutter-md">
-            <q-input id="txtMetar" @keypress.enter="login()" color="positive" v-model.trim="txtIdent" dense
+            <q-input id="txtMetar" @keypress.enter.prevent="login()" color="positive" v-model.trim="txtIdent" dense
               label="config ID">
               <template v-slot:prepend>
                 <q-icon name="badge" />
