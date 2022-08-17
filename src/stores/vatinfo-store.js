@@ -79,7 +79,6 @@ export const useVatinfoStore = defineStore("vatinfo", (router) => {
   };
 
   const loadIdentDataAPI = async (mode) => {
-    console.log("Calling loadIdentDataAPI");
     if (mode != "friends") arrMetars.value = [];
     arrCIDS.value = [];
     return await fetch(

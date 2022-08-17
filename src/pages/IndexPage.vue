@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { QSpinnerGears, useQuasar, date } from "quasar";
+import { QSpinnerGears, useQuasar, date, QSpinnerHourglass } from "quasar";
 import { inject, ref, onMounted, provide } from "vue";
 import Events from "components/Events.vue";
 import Friends from "components/Friends.vue";
@@ -49,13 +49,13 @@ provide('getEvents', getEvents)
 provide('allEvents', allEvents)
 
 async function updateData() {
-  $q.loading.show({ message: "Fetching Events,CIDs ...", spinner: QSpinnerGears })
+  $q.loading.show({ message: "Fetching Events,CIDs ...", spinner: QSpinnerHourglass })
   await getClients();
   await getEvents();
   await friendsRef.value.getOnlineCids();
-  $q.loading.show({ message: "Refreshing METARs ...", spinner: QSpinnerGears })
+  $q.loading.show({ message: "Refreshing METARs ...", spinner: QSpinnerHourglass })
   await metarRef.value.refreshAllMetars();
-  $q.loading.show({ message: "Refreshing INFO ...", spinner: QSpinnerGears })
+  $q.loading.show({ message: "Refreshing INFO ...", spinner: QSpinnerHourglass })
   $q.loading.hide();
   updateRefreshTime();
 }

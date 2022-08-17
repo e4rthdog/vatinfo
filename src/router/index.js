@@ -36,9 +36,6 @@ export default route(function ({ store }) {
 
   Router.beforeEach(async (to, from) => {
     const cfgStore = useVatinfoStore(store);
-    console.log(cfgStore.isAuthenticated);
-    console.log(cfgStore.ident);
-    console.log(to.name);
 
     if (cfgStore.isAuthenticated) {
       //Auto login

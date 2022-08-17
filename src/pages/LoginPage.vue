@@ -1,15 +1,18 @@
-//BUG First time pressing enter does nothing
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useVatinfoStore } from 'src/stores/vatinfo-store';
 import { useRouter } from 'vue-router';
+import { QSpinnerGears, useQuasar, date, QSpinnerHourglass } from "quasar";
 
+const $q = useQuasar();
 const txtIdent = ref('')
 const cfgStore = useVatinfoStore();
 const router = useRouter();
 
 const login = async () => {
+  $q.loading.show({ message: "Summoning the KRAKEN ...", spinner: QSpinnerHourglass })
   await cfgStore.authAction(txtIdent.value.toUpperCase());
+  $q.loading.hide();
   router.push({ name: "Root" });
 }
 
