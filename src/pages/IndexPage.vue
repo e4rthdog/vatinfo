@@ -1,5 +1,3 @@
-//TODO Add help in each panel
-//TODO Add version indication
 <template>
   <q-page class="q-ma-md">
     <div class="row">

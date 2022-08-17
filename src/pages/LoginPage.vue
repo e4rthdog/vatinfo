@@ -10,7 +10,7 @@ const router = useRouter();
 
 const login = async () => {
   await cfgStore.authAction(txtIdent.value.toUpperCase());
-  router.push('/')
+  router.push({ name: "Root" });
 }
 
 onMounted(() => {
