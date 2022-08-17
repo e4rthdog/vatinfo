@@ -63,13 +63,15 @@ async function updateData() {
 async function getClients() {
   await fetch(appConfig.clientsURL + '&' + date.formatDate(Date.now(), 'YYMMDDHHmmssSS'))
     .then((ret) => ret.json())
-    .then((m) => allClients.value = m);
+    .then((m) => allClients.value = m)
+    .catch((error) => { console.log(`getClients -> ${error}`) });
 }
 
 async function getEvents() {
   await fetch(appConfig.eventsURL + '?nonce=' + date.formatDate(Date.now(), 'YYMMDDHHmmssSS'))
     .then((ret) => ret.json())
-    .then((json) => allEvents.value = json.data);
+    .then((json) => allEvents.value = json.data)
+    .catch((error) => { console.log(`getEvents -> ${error}`) });
 }
 onMounted(async () => {
   await updateData();
