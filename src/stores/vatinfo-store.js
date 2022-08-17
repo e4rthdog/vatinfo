@@ -1,17 +1,17 @@
 import { defineStore } from "pinia";
-import { ref, inject, computed, reactive } from "vue";
+import { ref, computed } from "vue";
 import { date } from "quasar";
 import appConfig from "src/config";
 import _ from "lodash";
 
-export const useVatinfoStore = defineStore("vatinfo", () => {
-  const ident = ref("");
-  const previousIdent = ref(localStorage.getItem("previousident"));
+export const useVatinfoStore = defineStore("vatinfo", (router) => {
+  const isLogout = ref(false);
+  const ident = ref(localStorage.getItem("ident") ?? "");
   const identDBdATA = ref([]);
   const arrMetars = ref([]);
   const arrCIDS = ref([]);
   const isAuthenticated = computed(() => {
-    return ident.value === "" || !ident ? false : true;
+    return ident.value !== "";
   });
 
   const saveMetarsDB = async (v) => {
@@ -62,17 +62,18 @@ export const useVatinfoStore = defineStore("vatinfo", () => {
     arrCIDS.value = arrCIDS.value.filter((r) => r != toRemove);
   };
 
-  const authAction = async (loginFormIdent = "") => {
+  const authAction = async (loginFormIdent = "", action = "") => {
     if (loginFormIdent !== "") {
+      isLogout.value = false;
       ident.value = loginFormIdent;
-      previousIdent.value = loginFormIdent;
       identDBdATA.value = await loadIdentDataAPI();
       localStorage.setItem("ident", loginFormIdent);
-      localStorage.setItem("previousident", loginFormIdent);
     } else {
+      isLogout.value = true;
       ident.value = "";
       identDBdATA.value = [];
-      localStorage.setItem("previousident", previousIdent.value);
+      arrMetars.value = [];
+      arrCIDS.value = [];
       localStorage.setItem("ident", ident.value);
     }
   };
@@ -113,8 +114,8 @@ export const useVatinfoStore = defineStore("vatinfo", () => {
     ident,
     identDBdATA,
     isAuthenticated,
-    previousIdent,
     arrMetars,
     arrCIDS,
+    isLogout,
   };
 });

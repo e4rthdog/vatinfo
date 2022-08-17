@@ -36,12 +36,22 @@ export default route(function ({ store }) {
 
   Router.beforeEach(async (to, from) => {
     const cfgStore = useVatinfoStore(store);
-    if (cfgStore.previousIdent != "" && cfgStore.previousIdent != null) {
-      await cfgStore.authAction(cfgStore.previousIdent);
-    }
 
-    if (to.name !== "Login" && !cfgStore.isAuthenticated) {
-      return { name: "Login" };
+    if (cfgStore.isAuthenticated) {
+      //Auto login
+      if (!cfgStore.isLogout) {
+        await cfgStore.authAction(cfgStore.ident);
+      } else {
+        return { name: "Login" };
+      }
+
+      // if (to.name === "Login") {
+      //   return { name: "Root" };
+      // }
+    } else {
+      if (to.name !== "Login") {
+        return { name: "Login" };
+      }
     }
   });
 

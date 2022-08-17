@@ -1,5 +1,4 @@
-//TODO Add help in each panel
-//TODO Add version indication
+//FIXME Uncaught (in promise) TypeError: Cannot read properties of null (reading 'getOnlineCids')
 <template>
   <q-page class="q-ma-md">
     <div class="row">
@@ -25,7 +24,7 @@
 </template>
 
 <script setup>
-import { QSpinnerGears, useQuasar, date } from "quasar";
+import { QSpinnerGears, useQuasar, date, QSpinnerHourglass } from "quasar";
 import { inject, ref, onMounted, provide } from "vue";
 import Events from "components/Events.vue";
 import Friends from "components/Friends.vue";
@@ -43,7 +42,6 @@ const metarRef = ref();
 const infoRef = ref();
 const allClients = ref([]);
 const allEvents = ref([]);
-const isBusy = ref(false);
 
 provide('updateData', updateData);
 provide('allClients', allClients)
@@ -51,13 +49,13 @@ provide('getEvents', getEvents)
 provide('allEvents', allEvents)
 
 async function updateData() {
-  $q.loading.show({ message: "Fetching Events,CIDs ...", spinner: QSpinnerGears })
+  $q.loading.show({ message: "Fetching Events,CIDs ...", spinner: QSpinnerHourglass })
   await getClients();
   await getEvents();
   await friendsRef.value.getOnlineCids();
-  $q.loading.show({ message: "Refreshing METARs ...", spinner: QSpinnerGears })
+  $q.loading.show({ message: "Refreshing METARs ...", spinner: QSpinnerHourglass })
   await metarRef.value.refreshAllMetars();
-  $q.loading.show({ message: "Refreshing INFO ...", spinner: QSpinnerGears })
+  $q.loading.show({ message: "Refreshing INFO ...", spinner: QSpinnerHourglass })
   $q.loading.hide();
   updateRefreshTime();
 }
@@ -74,7 +72,7 @@ async function getEvents() {
     .then((json) => allEvents.value = json.data);
 }
 onMounted(async () => {
-  updateData();
+  await updateData();
   setInterval(updateData, appConfig.refreshInterval);
 });
 
