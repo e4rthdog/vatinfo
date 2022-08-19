@@ -5,6 +5,13 @@
       <span>General Info</span>
       <q-toggle v-model="panelVisible" label="" checked-icon="visibility" unchecked-icon="visibility_off"
         color="positive" class="q-mb-md float-right" />
+      <q-btn-toggle v-model="selectEvents" size="sm" push text-color="black" color="white" toggle-text-color="white"
+        toggle-color="positive" class="float-right" :options="[
+          { label: 'CTR', value: 'CTR' },
+          { label: 'APP', value: 'APP' },
+          { label: 'TWR', value: 'TWR' },
+          { label: 'GND', value: 'GND' }
+        ]" />
     </q-card-section>
     <q-separator />
     <q-slide-transition>
