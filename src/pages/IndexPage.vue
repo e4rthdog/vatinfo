@@ -6,13 +6,13 @@
         <events ref="eventsRef"></events>
       </div>
       <div class="col-12 col-md-5 q-ma-sm">
-        <friends ref="friendsRef"></friends>
+        <metar ref="metarRef"></metar>
       </div>
     </div>
 
     <div class="row">
       <div class="col-12 col-md-5 q-ma-sm">
-        <metar ref="metarRef"></metar>
+        <friends ref="friendsRef"></friends>
       </div>
       <div class="col-12 col-md-5 q-ma-sm">
         <info ref="infoRef"></info>
@@ -75,7 +75,7 @@ async function getEvents() {
 }
 onMounted(async () => {
   await updateData();
-  setInterval(updateData, appConfig.refreshInterval);
+  cfgStore.mainIntervalHandler = setInterval(updateData, appConfig.refreshInterval);
 });
 
 defineExpose({ updateData });
