@@ -18,6 +18,7 @@ const login = async () => {
 
 onMounted(() => {
   txtIdent.value = cfgStore.ident;
+  if (cfgStore.mainIntervalHandler) clearInterval(cfgStore.mainIntervalHandler)
 })
 
 </script>

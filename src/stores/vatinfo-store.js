@@ -10,6 +10,7 @@ export const useVatinfoStore = defineStore("vatinfo", (router) => {
   const identDBdATA = ref([]);
   const arrMetars = ref([]);
   const arrCIDS = ref([]);
+  const mainIntervalHandler = ref();
   const isAuthenticated = computed(() => {
     return ident.value !== "";
   });
@@ -128,5 +129,6 @@ export const useVatinfoStore = defineStore("vatinfo", (router) => {
     arrMetars,
     arrCIDS,
     isLogout,
+    mainIntervalHandler,
   };
 });

@@ -75,7 +75,7 @@ async function getEvents() {
 }
 onMounted(async () => {
   await updateData();
-  setInterval(updateData, appConfig.refreshInterval);
+  cfgStore.mainIntervalHandler = setInterval(updateData, appConfig.refreshInterval);
 });
 
 defineExpose({ updateData });
