@@ -3,6 +3,7 @@ import { ref, inject, onMounted, computed, watch } from "vue";
 import { useQuasar, QSpinnerGears, date, QSpinnerHourglass } from "quasar";
 import { useVatinfoStore } from "src/stores/vatinfo-store";
 import appConfig from "src/config";
+import PanelBar from "./PanelBar.vue";
 
 const cfgStore = useVatinfoStore();
 const txtICAO = ref("");
@@ -56,12 +57,17 @@ defineExpose({ refreshAllMetars })
 
 <template>
   <q-card>
-    <q-card-section class="bg-primary text-white">
-      <q-icon name="people" size="1.5rem" class="q-mr-sm" />
-      <span>METAR Info</span>
-      <q-toggle v-model="panelVisible" label="" checked-icon="visibility" unchecked-icon="visibility_off"
-        color="positive" class="q-mb-md float-right" />
-    </q-card-section>
+    <PanelBar>
+      <template #title>
+        <span>
+          <q-icon name="people" size="1.5rem" class="q-mr-sm" />METAR Info
+        </span>
+      </template>
+      <template #window-control>
+        <q-toggle v-model="panelVisible" label="" checked-icon="visibility" unchecked-icon="visibility_off"
+          color="positive" class="float-right" />
+      </template>
+    </PanelBar>
     <q-separator />
     <q-slide-transition>
       <div v-show="panelVisible">

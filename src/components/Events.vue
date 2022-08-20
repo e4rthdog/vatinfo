@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch, inject, computed } from "vue";
 import { date } from "quasar";
+import PanelBar from "./PanelBar.vue";
 
 const allEvents = inject('allEvents', []);
 const listEvents = computed(() => allEvents.value.filter((e) => Math.abs(date.getDateDiff(Date.now(), e.start_time, "days")) <= selectEvents.value ? true : false));
@@ -17,30 +18,28 @@ function eventAirports(e) {
 
 <template>
   <q-card>
-    <q-card-section class="bg-primary text-white  q-ma-none q-pa-sm">
-      <div class="row items-center q-ma-none q-pa-none">
-        <div class="column col-12 col-lg-3 items-center items-lg-start">
-          <span>
-            <q-icon name="event" size="1.5rem" class="q-mr-sm q-mb-lg-none q-mb-sm" />Events <q-badge color="orange"
-              class="q-mx-sm ">{{
-                  listEvents.length
-              }}</q-badge>
-          </span>
-        </div>
-        <div class="column col-12 col-lg-8 items-center items-lg-end">
-          <q-btn-toggle v-model="selectEvents" size="sm" push text-color="black" color="white" toggle-text-color="white"
-            toggle-color="positive" class="float-right" :options="[
-              { label: 'Today', value: 0 },
-              { label: '+1', value: 1 },
-              { label: '+7', value: 7 }
-            ]" />
-        </div>
-        <div class="column col-12 col-lg-1 items-center items-lg-end">
-          <q-toggle v-model="panelVisible" label="" checked-icon="visibility" unchecked-icon="visibility_off"
-            color="positive" class="float-right" />
-        </div>
-      </div>
-    </q-card-section>
+    <PanelBar>
+      <template #title>
+        <span>
+          <q-icon name="event" size="1.5rem" class="q-mr-sm q-mb-lg-none q-mb-sm" />Events <q-badge color="orange"
+            class="q-mx-sm ">{{
+                listEvents.length
+            }}</q-badge>
+        </span>
+      </template>
+      <template #content>
+        <q-btn-toggle v-model="selectEvents" size="sm" push text-color="black" color="white" toggle-text-color="white"
+          toggle-color="positive" class="float-right" :options="[
+            { label: 'Today', value: 0 },
+            { label: '+1', value: 1 },
+            { label: '+7', value: 7 }
+          ]" />
+      </template>
+      <template #window-control>
+        <q-toggle v-model="panelVisible" label="" checked-icon="visibility" unchecked-icon="visibility_off"
+          color="positive" class="float-right" />
+      </template>
+    </PanelBar>
     <q-separator />
     <q-slide-transition>
       <div v-show="panelVisible">

@@ -1,28 +1,26 @@
 <template>
   <q-card>
-    <q-card-section class="bg-primary text-white q-ma-none q-pa-sm">
-      <div class="row items-center q-ma-none q-pa-none">
-        <div class="column col-12 col-lg-3 items-center items-lg-start">
-          <span>
-            <q-icon name="info" size="1.5rem" class="q-mr-sm q-mb-lg-none q-mb-sm" />General Info
-          </span>
-        </div>
-        <div class="column col-12 col-lg-8 items-center items-lg-end">
-          <q-btn-toggle v-model="selectPositions" size="sm" push text-color="black" color="white"
-            toggle-text-color="white" toggle-color="positive" class="" :options="[
-              { label: 'CTR', value: 'CTR' },
-              { label: 'APP', value: 'APP' },
-              { label: 'TWR', value: 'TWR' },
-              { label: 'GND', value: 'GND' },
-              { label: 'DEL', value: 'DEL' }
-            ]" />
-        </div>
-        <div class="column col-12 col-lg-1 items-center items-lg-end">
-          <q-toggle v-model="panelVisible" label="" checked-icon="visibility" unchecked-icon="visibility_off"
-            color="positive" class="float-right" />
-        </div>
-      </div>
-    </q-card-section>
+    <PanelBar>
+      <template #title>
+        <span>
+          <q-icon name="info" size="1.5rem" class="q-mr-sm q-mb-lg-none q-mb-sm" />General Info
+        </span>
+      </template>
+      <template #content>
+        <q-btn-toggle v-model="selectPositions" size="sm" push text-color="black" color="white"
+          toggle-text-color="white" toggle-color="positive" class="" :options="[
+            { label: 'CTR', value: 'CTR' },
+            { label: 'APP', value: 'APP' },
+            { label: 'TWR', value: 'TWR' },
+            { label: 'GND', value: 'GND' },
+            { label: 'DEL', value: 'DEL' }
+          ]" />
+      </template>
+      <template #window-control>
+        <q-toggle v-model="panelVisible" label="" checked-icon="visibility" unchecked-icon="visibility_off"
+          color="positive" class="float-right" />
+      </template>
+    </PanelBar>
     <q-separator />
     <q-slide-transition>
       <div v-show="panelVisible">
@@ -71,6 +69,7 @@
 </template>
 
 <script setup>
+import PanelBar from "./PanelBar.vue";
 import { ref, inject, computed } from "vue";
 import { date } from "quasar";
 import appConfig

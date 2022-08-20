@@ -4,6 +4,7 @@ import { useQuasar, QSpinnerGears, date, QSpinnerHourglass } from "quasar";
 import { useVatinfoStore } from "src/stores/vatinfo-store";
 import appConfig from "src/config";
 import _ from 'lodash';
+import PanelBar from "./PanelBar.vue";
 
 const cfgStore = useVatinfoStore();
 const onlineCIDS = ref([]);
@@ -69,14 +70,21 @@ defineExpose({ getOnlineCids });
 
 <template>
   <q-card>
-    <q-card-section class="bg-primary text-white">
-      <q-icon name="people" size="1.5rem" class="q-mr-sm" />
-      <span>Tracked Members</span>
-      <q-toggle v-model="panelVisible" label="" checked-icon="visibility" unchecked-icon="visibility_off"
-        color="positive" class="q-mb-md float-right" />
-      <q-btn label="Manage" icon="manage_accounts" size="sm" color="positive" class="float-right"
-        @click="dlgManage = true;"></q-btn>
-    </q-card-section>
+    <PanelBar>
+      <template #title>
+        <span>
+          <q-icon name="people" size="1.5rem" class="q-mr-sm" />Tracked Members
+        </span>
+      </template>
+      <template #content>
+        <q-btn label="Manage" icon="manage_accounts" size="sm" color="positive" class="float-right"
+          @click="dlgManage = true;"></q-btn>
+      </template>
+      <template #window-control>
+        <q-toggle v-model="panelVisible" label="" checked-icon="visibility" unchecked-icon="visibility_off"
+          color="positive" class="float-right" />
+      </template>
+    </PanelBar>
     <q-separator />
     <q-slide-transition>
       <q-card-section v-show="panelVisible">
