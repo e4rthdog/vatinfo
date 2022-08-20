@@ -1,17 +1,21 @@
 <template>
   <q-card>
-    <q-card-section class="bg-primary text-white">
-      <q-icon name="info" size="1.5rem" class="q-mr-sm" />
-      <span>General Info</span>
-      <q-toggle v-model="panelVisible" label="" checked-icon="visibility" unchecked-icon="visibility_off"
-        color="positive" class="q-mb-md float-right" />
-      <q-btn-toggle v-model="selectEvents" size="sm" push text-color="black" color="white" toggle-text-color="white"
-        toggle-color="positive" class="float-right" :options="[
-          { label: 'CTR', value: 'CTR' },
-          { label: 'APP', value: 'APP' },
-          { label: 'TWR', value: 'TWR' },
-          { label: 'GND', value: 'GND' }
-        ]" />
+    <q-card-section class="bg-primary text-white q-ma-none q-py-none q-px-sm">
+      <div class="row items-center q-ma-none q-pa-none">
+        <q-icon name="info" size="1.5rem" class="q-mr-sm" />
+        <span>General Info</span>
+        <q-space></q-space>
+        <q-btn-toggle v-model="selectPositions" size="sm" push text-color="black" color="white"
+          toggle-text-color="white" toggle-color="positive" class="float-right items-center" :options="[
+            { label: 'CTR', value: 'CTR' },
+            { label: 'APP', value: 'APP' },
+            { label: 'TWR', value: 'TWR' },
+            { label: 'GND', value: 'GND' },
+            { label: 'DEL', value: 'DEL' }
+          ]" />
+        <q-toggle v-model="panelVisible" label="" checked-icon="visibility" unchecked-icon="visibility_off"
+          color="positive" class="q-mb-md float-right" />
+      </div>
     </q-card-section>
     <q-separator />
     <q-slide-transition>
@@ -35,8 +39,10 @@
 
         <q-card-section class="q-pa-xs">
           <div class="row" style="max-height:400px;overflow:auto;">
-            <div class="col-12 col-lg-6 q-pa-sm">
-              <p class="text-center q-ma-sm">CTRs Online ({{ totalCTR.length }})</p>
+            <div class="col-12 q-pa-sm">
+              <p class="text-center q-ma-sm"
+                v-html="`${selectPositions}s Online (${totalPositions.get(selectPositions).length})`">
+              </p>
               <q-markup-table bordered dense flat wrap-cells class="full-width text-left">
                 <thead>
                   <tr class="bg-grey-1">
@@ -46,26 +52,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(m, index) in totalCTR" :key="index">
-                    <td>{{ m.callsign }} </td>
-                    <td>{{ m.realname }}</td>
-                    <td>{{ m.time_logon_str }}</td>
-                  </tr>
-                </tbody>
-              </q-markup-table>
-            </div>
-            <div class="col-12 col-lg-6 q-pa-sm">
-              <p class="text-center q-ma-sm">APPs Online ({{ totalAPP.length }})</p>
-              <q-markup-table bordered dense flat wrap-cells class="full-width text-left">
-                <thead>
-                  <tr class="bg-grey-1">
-                    <th>Callsign</th>
-                    <th>Name</th>
-                    <th>Since</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(m, index) in totalAPP" :key="index">
+                  <tr v-for="(m, index) in totalPositions.get(selectPositions)" :key="index">
                     <td>{{ m.callsign }} </td>
                     <td>{{ m.realname }}</td>
                     <td>{{ m.time_logon_str }}</td>
@@ -88,15 +75,18 @@ import appConfig
 const allClients = inject('allClients');
 const tabName = ref('ctr');
 const panelVisible = ref(true)
+const selectPositions = ref('CTR')
 
-
-const totalCTR = computed(() => {
-  return createTypeArray('CTR');
-});
-
-const totalAPP = computed(() => {
-  return createTypeArray('APP');
-});
+const totalPositions = computed(() => {
+  let result = new Map();
+  result.set('CTR', createTypeArray('CTR'));
+  result.set('APP', createTypeArray('APP'));
+  result.set('DEL', createTypeArray('DEL'));
+  result.set('TWR', createTypeArray('TWR'));
+  result.set('GND', createTypeArray('GND'));
+  result.set('DEL', createTypeArray('DEL'));
+  return result;
+})
 
 const totalByType = computed(() => {
   let res = {}
