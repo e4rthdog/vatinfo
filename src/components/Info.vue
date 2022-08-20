@@ -1,20 +1,26 @@
 <template>
   <q-card>
-    <q-card-section class="bg-primary text-white q-ma-none q-py-none q-px-sm">
+    <q-card-section class="bg-primary text-white q-ma-none q-pa-sm">
       <div class="row items-center q-ma-none q-pa-none">
-        <q-icon name="info" size="1.5rem" class="q-mr-sm" />
-        <span>General Info</span>
-        <q-space></q-space>
-        <q-btn-toggle v-model="selectPositions" size="sm" push text-color="black" color="white"
-          toggle-text-color="white" toggle-color="positive" class="float-right items-center" :options="[
-            { label: 'CTR', value: 'CTR' },
-            { label: 'APP', value: 'APP' },
-            { label: 'TWR', value: 'TWR' },
-            { label: 'GND', value: 'GND' },
-            { label: 'DEL', value: 'DEL' }
-          ]" />
-        <q-toggle v-model="panelVisible" label="" checked-icon="visibility" unchecked-icon="visibility_off"
-          color="positive" class="q-mb-md float-right" />
+        <div class="column col-12 col-lg-3 items-center items-lg-start">
+          <span>
+            <q-icon name="info" size="1.5rem" class="q-mr-sm q-mb-lg-none q-mb-sm" />General Info
+          </span>
+        </div>
+        <div class="column col-12 col-lg-8 items-center items-lg-end">
+          <q-btn-toggle v-model="selectPositions" size="sm" push text-color="black" color="white"
+            toggle-text-color="white" toggle-color="positive" class="" :options="[
+              { label: 'CTR', value: 'CTR' },
+              { label: 'APP', value: 'APP' },
+              { label: 'TWR', value: 'TWR' },
+              { label: 'GND', value: 'GND' },
+              { label: 'DEL', value: 'DEL' }
+            ]" />
+        </div>
+        <div class="column col-12 col-lg-1 items-center items-lg-end">
+          <q-toggle v-model="panelVisible" label="" checked-icon="visibility" unchecked-icon="visibility_off"
+            color="positive" class="float-right" />
+        </div>
       </div>
     </q-card-section>
     <q-separator />
