@@ -47,7 +47,9 @@
               <q-markup-table bordered dense flat wrap-cells class="full-width text-left e4-panel-table-sm">
                 <thead>
                   <tr class="bg-grey-1">
-                    <th>Callsign</th>
+                    <th>Callsign <q-badge color="orange" class="q-mx-sm ">{{ totalPositions.get(selectPositions).length
+                    }}</q-badge>
+                    </th>
                     <th>Name</th>
                     <th>Since</th>
                   </tr>
