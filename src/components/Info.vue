@@ -38,12 +38,9 @@
         </q-card-section>
 
         <q-card-section class="q-pa-xs">
-          <div class="row" style="max-height:400px;overflow:auto;">
+          <div class="row">
             <div class="col-12 q-pa-sm">
-              <p class="text-center q-ma-sm"
-                v-html="`${selectPositions}s Online (${totalPositions.get(selectPositions).length})`">
-              </p>
-              <q-markup-table bordered dense flat wrap-cells class="full-width text-left">
+              <q-markup-table bordered dense flat wrap-cells class="full-width text-left e4-panel-table-sm">
                 <thead>
                   <tr class="bg-grey-1">
                     <th>Callsign</th>

@@ -1,6 +1,10 @@
 // $
 @import "../../node_modules/quasar/src/css/variables.sass";
 
+//Variables
+$panel-table-height-sm: 350px;
+$panel-table-height-lg: 400px;
+
 /* open-sans-regular - latin */
 @font-face {
   font-family: "Open Sans";
@@ -37,4 +41,14 @@ th {
   text-decoration: none;
   color: $positive  !important;
   font-weight: 600;
+}
+
+.e4-panel-table-sm {
+  max-height: $panel-table-height-sm;
+  overflow: auto;
+}
+
+.e4-panel-table-lg {
+  max-height: $panel-table-height-lg;
+  overflow: auto;
 }

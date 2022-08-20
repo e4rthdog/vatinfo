@@ -80,7 +80,7 @@ defineExpose({ getOnlineCids });
     <q-separator />
     <q-slide-transition>
       <q-card-section v-show="panelVisible">
-        <q-markup-table bordered dense flat wrap-cells class="text-center">
+        <q-markup-table bordered dense flat wrap-cells class="text-center e4-panel-table-lg">
           <thead>
             <tr class="bg-grey-1">
               <th class="text-left">Status</th>

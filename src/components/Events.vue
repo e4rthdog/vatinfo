@@ -32,30 +32,32 @@ function eventAirports(e) {
     </q-card-section>
     <q-separator />
     <q-slide-transition>
-      <q-card-section style="max-height:400px;overflow:auto;" v-show="panelVisible">
-        <q-markup-table bordered dense flat wrap-cells class="text-center">
-          <thead>
-            <tr class="bg-grey-1">
-              <th class="text-left">Event Name</th>
-              <th>Start(LT)</th>
-              <th>Airports</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(e, index) in listEvents" :key="index">
-              <td class="text-left">
-                <a class="link-no-decoration text-black" :href="e.link" target="_blank">{{ e.name }}
-                  <q-icon name="open_in_new" />
-                </a>
-              </td>
-              <td>{{ date.formatDate(new Date(e.start_time), "ddd DD/MM/YY HH:mm") }}-{{ date.formatDate(new
-                  Date(e.end_time), "HH:mm")
-              }}</td>
-              <td>{{ eventAirports(e) }}</td>
-            </tr>
-          </tbody>
-        </q-markup-table>
-      </q-card-section>
+      <div v-show="panelVisible">
+        <q-card-section class="q-ma-xs">
+          <q-markup-table bordered dense flat wrap-cells class="text-center e4-panel-table-lg">
+            <thead>
+              <tr class="bg-grey-1">
+                <th class="text-left">Event Name</th>
+                <th>Start(LT)</th>
+                <th>Airports</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(e, index) in listEvents" :key="index">
+                <td class="text-left">
+                  <a class="link-no-decoration text-black" :href="e.link" target="_blank">{{ e.name }}
+                    <q-icon name="open_in_new" />
+                  </a>
+                </td>
+                <td>{{ date.formatDate(new Date(e.start_time), "ddd DD/MM/YY HH:mm") }}-{{ date.formatDate(new
+                    Date(e.end_time), "HH:mm")
+                }}</td>
+                <td>{{ eventAirports(e) }}</td>
+              </tr>
+            </tbody>
+          </q-markup-table>
+        </q-card-section>
+      </div>
     </q-slide-transition>
   </q-card>
 </template>
