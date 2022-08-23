@@ -4,6 +4,7 @@ import { useQuasar, QSpinnerGears, date, QSpinnerHourglass } from "quasar";
 import { useVatinfoStore } from "src/stores/vatinfo-store";
 import appConfig from "src/config";
 import PanelBar from "./PanelBar.vue";
+import metarParser from "aewx-metar-parser";
 
 const cfgStore = useVatinfoStore();
 const txtICAO = ref("");
@@ -22,7 +23,10 @@ async function getMetar(icao = txtICAO.value.toUpperCase()) {
 
 async function refreshAllMetars() {
   for await (const m of cfgStore.arrMetars) {
-    await getMetar(m.icao).then((d) => (m.metar = d.metar));
+    await getMetar(m.icao).then((d) => {
+      m.metar = d.metar;
+      m.category = metarParser(d.metar).flight_category;
+    });
   }
 }
 
@@ -115,6 +119,10 @@ defineExpose({ refreshAllMetars })
                 <tbody>
                   <tr v-for="(m, index) in arrMetarsSorted" :key="index">
                     <td>
+                      <q-badge v-if="m.metar != ''" class="q-pa-xs" :color="appConfig.metarCategory[m.category]">{{
+                          m.category
+                      }}
+                      </q-badge>
                       {{ m.metar }}
                       <q-badge text-color="white" class="transparent">
                         <q-btn v-if="m.metar != ''" dense color="negative" size="0.4rem" icon="clear" class="q-mx-none"

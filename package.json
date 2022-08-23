@@ -1,6 +1,6 @@
 {
   "name": "vatinfo",
-  "version": "0.9.9",
+  "version": "0.9.11",
   "description": "VATINFO Panels",
   "productName": "VATINFO",
   "author": "e4rthdog <elias.stassinos@gmail.com>",
@@ -11,6 +11,7 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "@vueuse/core": "^9.1.0",
+    "aewx-metar-parser": "^1.0.0",
     "lodash": "^4.17.21",
     "pinia": "^2.0.18",
     "quasar": "^2.6.0",
