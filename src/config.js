@@ -13,6 +13,12 @@ const appConfig = {
     PILOT: "flight",
     ATC: "settings_input_antenna",
   },
+  metarCategory: {
+    VFR: "green",
+    MVFR: "blue",
+    IFR: "red",
+    LIFR: "purple",
+  },
   refreshInterval: 15 * 60 * 1000,
 };
 
