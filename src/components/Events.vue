@@ -7,6 +7,8 @@ import appConfig from "src/config";
 
 const cfgStore = useVatinfoStore();
 const allEvents = inject('allEvents', []);
+const dlgFilter = ref(false);
+const filterStatus = computed(() => selectedDivisionsValues.value.length === 0 ? 'ALL' : selectedDivisionsValues.value.length)
 const listEvents = computed(() => {
   let result = allEvents.value.filter((e) => Math.abs(date.getDateDiff(Date.now(), e.start_time, "days")) <= selectEvents.value ? true : false)
   if (selectedDivisionsValues.value.length != 0) {
@@ -50,12 +52,22 @@ function eventAirports(e) {
         </span>
       </template>
       <template #content>
-        <q-btn-toggle v-model="selectEvents" size="sm" push text-color="black" color="white" toggle-text-color="white"
-          toggle-color="positive" class="float-right" :options="[
-            { label: 'Today', value: 0 },
-            { label: '+1', value: 1 },
-            { label: '+7', value: 7 }
-          ]" />
+        <div class="row items-center q-pa-none q-ma-none">
+          <div class="column col-12 col-lg-6 items-center q-my-lg-none q-my-sm">
+            <q-btn-toggle class="q-mr-none q-mr-lg-md" v-model="selectEvents" size="sm" push text-color="black"
+              color="white" toggle-text-color="white" toggle-color="positive" :options="[
+                { label: 'Today', value: 0 },
+                { label: '+1', value: 1 },
+                { label: '+7', value: 7 }
+              ]" />
+          </div>
+          <div class="column col-12 col-lg-6 items-center">
+            <q-btn icon="filter_alt" size="sm" color="positive" @click="dlgFilter = true;">Filter<q-badge color="orange"
+                class="q-mx-sm">
+                {{ filterStatus }}</q-badge>
+            </q-btn>
+          </div>
+        </div>
       </template>
       <template #window-control>
         <q-toggle v-model="panelVisible" label="" checked-icon="visibility" unchecked-icon="visibility_off"
@@ -66,12 +78,6 @@ function eventAirports(e) {
     <q-slide-transition>
       <div v-show="panelVisible">
         <q-card-section class="q-ma-xs q-pt-none">
-          <div class="row items-center q-ma-xs">
-            <div class="col-12">
-              <q-select class="full-width" label="Select Divisions." v-model="selectedDivisions" use-chips multiple
-                dense options-dense :options="vatsimDivisionsArr" />
-            </div>
-          </div>
           <div class="row items-center">
             <q-markup-table bordered dense flat wrap-cells class="text-center e4-panel-table-lg">
               <thead>
@@ -102,4 +108,32 @@ function eventAirports(e) {
       </div>
     </q-slide-transition>
   </q-card>
+
+  <!-- Filter Dialog window -->
+  <q-dialog v-model="dlgFilter" persistent transition-show="scale" transition-hide="scale">
+    <q-card style="width:300px;">
+      <q-card-section class="bg-primary text-white">
+        <div>Filter events</div>
+      </q-card-section>
+      <q-card-section class="q-pa-xs">
+        <div class="row items-center q-ma-xs">
+          <div class="col-12" style="height:300px;overflow-y: auto;">
+            <q-select label="Select Divisions." v-model="selectedDivisions" clearable multiple dense use-chips
+              options-dense :options="vatsimDivisionsArr" :display-value="selectedDivisionsValues" />
+          </div>
+          <div class="col-12 text-center">
+            <q-btn-group push :stretch="false" class="q-ma-md">
+              <q-btn @click="updatePanel()" label="Load" color="primary" class="footer-text" />
+              <q-btn @click="refreshAllMetars()" label="Save" color="info" class="footer-text" />
+            </q-btn-group>
+          </div>
+
+        </div>
+      </q-card-section>
+      <q-card-actions align="right" class="positive text-white bg-primary">
+        <q-btn flat label="Close" v-close-popup />
+      </q-card-actions>
+    </q-card>
+
+  </q-dialog>
 </template>
