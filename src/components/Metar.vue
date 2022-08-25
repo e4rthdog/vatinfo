@@ -75,7 +75,7 @@ defineExpose({ refreshAllMetars })
     <q-separator />
     <q-slide-transition>
       <div v-show="panelVisible">
-        <q-card-section>
+        <q-card-section class="q-pt-none">
           <div class="row items-center">
             <div class="col-12 col-lg-5">
               <q-input id="txtMetar" @keypress.enter="updatePanel()" color="positive" v-model.trim="txtICAO" dense
