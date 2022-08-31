@@ -1,18 +1,19 @@
 <script setup>
-import { ref, watch, inject, computed } from "vue";
-import { date } from "quasar";
+import { ref, watch, inject, computed, onMounted } from "vue";
+import { date, QSpinnerHourglass, useQuasar } from "quasar";
 import PanelBar from "./PanelBar.vue";
 import { useVatinfoStore } from "src/stores/vatinfo-store";
 import appConfig from "src/config";
 
+const $q = useQuasar();
 const cfgStore = useVatinfoStore();
 const allEvents = inject('allEvents', []);
 const dlgFilter = ref(false);
-const filterStatus = computed(() => selectedDivisionsValues.value.length === 0 ? 'ALL' : selectedDivisionsValues.value.length)
+const filterStatus = computed(() => cfgStore.arrDivisions.length === 0 ? 'ALL' : cfgStore.arrDivisions.length)
 const listEvents = computed(() => {
   let result = allEvents.value.filter((e) => Math.abs(date.getDateDiff(Date.now(), e.start_time, "days")) <= selectEvents.value ? true : false)
-  if (selectedDivisionsValues.value.length != 0) {
-    result = result.filter(e => selectedDivisionsValues.value.includes(e.organisers[0].division))
+  if (cfgStore.arrDivisions.length != 0) {
+    result = result.filter(e => cfgStore.arrDivisions.includes(e.organisers[0].division))
   }
   return result;
 });
@@ -32,6 +33,17 @@ const vatsimDivisionsArr = computed(() => {
   return result.sort();
 })
 
+const loadDivisionsPanel = async () => {
+  $q.loading.show({ message: "Loading your favorite Event divisions ...", spinner: QSpinnerHourglass })
+  await cfgStore.loadIdentDataAPI('events');
+  $q.loading.hide();
+}
+const saveDivisionsPanel = async () => {
+  $q.loading.show({ message: "Saving your event divisions ...", spinner: QSpinnerHourglass })
+  await cfgStore.saveDIVDB(selectedDivisionsValues.value)
+  $q.loading.hide();
+}
+
 function eventAirports(e) {
   let airports = "";
   e.airports.forEach((a) => (airports += a.icao + " "));
@@ -47,7 +59,7 @@ function eventAirports(e) {
         <span>
           <q-icon name="event" size="1.5rem" class="q-mr-sm q-mb-lg-none q-mb-sm" />Events <q-badge color="orange"
             class="q-mx-sm ">{{
-                listEvents.length
+             listEvents.length
             }}</q-badge>
         </span>
       </template>
@@ -64,7 +76,7 @@ function eventAirports(e) {
           <div class="column col-12 col-lg-6 items-center">
             <q-btn icon="filter_alt" size="sm" color="positive" @click="dlgFilter = true;">Filter<q-badge color="orange"
                 class="q-mx-sm">
-                {{ filterStatus }}</q-badge>
+                {{  filterStatus  }}</q-badge>
             </q-btn>
           </div>
         </div>
@@ -90,15 +102,19 @@ function eventAirports(e) {
               <tbody>
                 <tr v-for="(e, index) in listEvents" :key="index">
                   <td class="text-left">
-                    <a class="link-no-decoration text-black" :href="e.link" target="_blank">{{ e.name }}
-                      ({{ e.organisers[0].division }})
+                    <a class="link-no-decoration text-black" :href="e.link" target="_blank">{{  e.name  }}
+                      ({{  e.organisers[0].division  }})
                       <q-icon name="open_in_new" />
                     </a>
                   </td>
-                  <td>{{ date.formatDate(new Date(e.start_time), "ddd DD/MM/YY HH:mm") }}-{{ date.formatDate(new
-                      Date(e.end_time), "HH:mm")
-                  }}</td>
-                  <td>{{ eventAirports(e) }}</td>
+                  <td>{{  date.formatDate(new Date(e.start_time), "ddd DD/MM/YY HH:mm")  }}-{{  date.formatDate(new
+                  Date(e.end_time), "HH:mm")
+
+
+
+
+                    }}</td>
+                  <td>{{  eventAirports(e)  }}</td>
                 </tr>
               </tbody>
             </q-markup-table>
@@ -123,8 +139,8 @@ function eventAirports(e) {
           </div>
           <div class="col-12 text-center">
             <q-btn-group push :stretch="false" class="q-ma-md">
-              <q-btn @click="updatePanel()" label="Load" color="primary" class="footer-text" />
-              <q-btn @click="refreshAllMetars()" label="Save" color="info" class="footer-text" />
+              <q-btn @click="loadDivisionsPanel()" label="Load" color="primary" class="footer-text" />
+              <q-btn @click="saveDivisionsPanel()" label="Save" color="info" class="footer-text" />
             </q-btn-group>
           </div>
 

@@ -66,7 +66,11 @@ const logout = async () => {
 }
 provide('updateRefreshTime', updateRefreshTime)
 
-onMounted(() => {
+onMounted(async () => {
+  if (cfgStore.isAuthenticated) {
+    await cfgStore.loadIdentDataAPI()
+    cfgStore.updateArrMetars()
+  };
   updateTime();
   updateRefreshTime();
   setInterval(() => {

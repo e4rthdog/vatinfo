@@ -8,7 +8,8 @@ const appConfig = {
   serversURL: "https://vatboard.estassinos.com/getdata.php?type=SERVERS",
   callsignURL: "https://vatboard.estassinos.com/getdata.php?type=CALLSIGN&q=",
   clientsURL: "https://vatboard.estassinos.com/getdata.php?type=ALL",
-  apiURL: "https://vatboard.estassinos.com",
+  //apiURL: "https://vatboard.estassinos.com",
+  apiURL: "https://localhost/vatinfo-api",
   status: {
     PILOT: "flight",
     ATC: "settings_input_antenna",
