@@ -31,12 +31,15 @@ async function refreshAllMetars() {
 }
 
 async function updatePanel() {
-  await getMetar().then((d) => {
-    if (d.metar.trim() != '') cfgStore.$patch((state) => {
-      d.category = metarParser(d.metar).flight_category;
-      state.arrMetars.push(d);
-    })
-  });
+  if (!cfgStore.arrMetars.find(m => m.icao.toUpperCase() === txtICAO.value.toUpperCase().trim())) {
+    await getMetar().then((d) => {
+      if (d.metar.trim() != '') cfgStore.$patch((state) => {
+        d.category = metarParser(d.metar).flight_category;
+        state.arrMetars.push(d);
+      })
+    });
+  }
+
   txtICAO.value = "";
 }
 

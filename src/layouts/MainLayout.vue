@@ -68,8 +68,9 @@ provide('updateRefreshTime', updateRefreshTime)
 
 onMounted(async () => {
   if (cfgStore.isAuthenticated) {
-    await cfgStore.loadIdentDataAPI()
-    cfgStore.updateArrMetars()
+    await cfgStore.loadIdentDataAPI();
+    cfgStore.updateArrMetars();
+    cfgStore.updateArrCIDS();
   };
   updateTime();
   updateRefreshTime();

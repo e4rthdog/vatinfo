@@ -10,25 +10,8 @@ export const useVatinfoStore = defineStore("vatinfo", (router) => {
   const identDBDATA = ref([]);
   const arrMetars = ref([]);
 
-  const arrDivisions = computed(() => {
-    let result = [];
-    if (identDBDATA.value) {
-      identDBDATA.value.forEach((k) => {
-        if (k.filter_division.trim() != "")
-          result.push(k.filter_division.trim());
-      });
-    }
-    return result;
-  });
-  const arrCIDS = computed(() => {
-    let result = [];
-    if (identDBDATA.value) {
-      identDBDATA.value.forEach((k) => {
-        if (k.cid.trim() != "") result.push(k.cid.trim());
-      });
-    }
-    return result;
-  });
+  const arrDivisions = ref([]);
+  const arrCIDS = ref([]);
   const mainIntervalHandler = ref();
   const isAuthenticated = computed(() => {
     return ident.value !== "";
@@ -146,6 +129,9 @@ export const useVatinfoStore = defineStore("vatinfo", (router) => {
         if (mode === "metars") {
           updateArrMetars();
         }
+        if (mode === "cids") {
+          updateArrCIDS();
+        }
       })
       .catch((error) => {
         console.log(`loadIdentDataAPI -> ${error}`);
@@ -167,6 +153,15 @@ export const useVatinfoStore = defineStore("vatinfo", (router) => {
     }
   };
 
+  const updateArrCIDS = () => {
+    arrCIDS.value = [];
+    if (identDBDATA.value) {
+      identDBDATA.value.forEach((k) => {
+        if (k.cid.trim() != "") arrCIDS.value.push(k.cid.trim());
+      });
+    }
+  };
+
   return {
     saveMetarsDB,
     loadIdentDataAPI,
@@ -177,6 +172,7 @@ export const useVatinfoStore = defineStore("vatinfo", (router) => {
     saveDIVDB,
     removeMetar,
     updateArrMetars,
+    updateArrCIDS,
     ident,
     identDBDATA,
     isAuthenticated,

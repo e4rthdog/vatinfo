@@ -16,7 +16,7 @@ const panelVisible = ref(true)
 
 const loadCID = async () => {
   $q.loading.show({ message: "Loading your favorite Pilots/Controllers ...", spinner: QSpinnerHourglass })
-  await cfgStore.loadIdentDataAPI('friends');
+  await cfgStore.loadIdentDataAPI('cids');
   await getOnlineCids();
   $q.loading.hide();
 }
@@ -48,7 +48,6 @@ async function formRemoveCID(toRemove = txtCID.value.toUpperCase()) {
   txtCID.value = ''
   await getOnlineCids();
 }
-
 
 const getOnlineCids = async () => {
   onlineCIDS.value = [];
