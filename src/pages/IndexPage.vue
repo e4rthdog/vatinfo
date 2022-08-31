@@ -6,7 +6,7 @@
   <q-page class="q-ma-md">
     <div class="row">
       <div class="col-12 col-md-5 q-ma-sm">
-        <events ref="eventsRef"></events>
+        <events ref="eventsRef" v-if="cfgStore.eventsPanelReady"></events>
       </div>
       <div class="col-12 col-md-5 q-ma-sm">
         <metar ref="metarRef"></metar>

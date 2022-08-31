@@ -71,6 +71,7 @@ onMounted(async () => {
     await cfgStore.loadIdentDataAPI();
     cfgStore.updateArrMetars();
     cfgStore.updateArrCIDS();
+    cfgStore.updateArrDivisions();
   };
   updateTime();
   updateRefreshTime();

@@ -9,8 +9,8 @@ export const useVatinfoStore = defineStore("vatinfo", (router) => {
   const ident = ref(localStorage.getItem("ident") ?? "");
   const identDBDATA = ref([]);
   const arrMetars = ref([]);
-
   const arrDivisions = ref([]);
+  const eventsPanelReady = ref(false);
   const arrCIDS = ref([]);
   const mainIntervalHandler = ref();
   const isAuthenticated = computed(() => {
@@ -132,6 +132,9 @@ export const useVatinfoStore = defineStore("vatinfo", (router) => {
         if (mode === "cids") {
           updateArrCIDS();
         }
+        if (mode === "events") {
+          updateArrDivisions();
+        }
       })
       .catch((error) => {
         console.log(`loadIdentDataAPI -> ${error}`);
@@ -162,6 +165,17 @@ export const useVatinfoStore = defineStore("vatinfo", (router) => {
     }
   };
 
+  const updateArrDivisions = () => {
+    arrDivisions.value = [];
+    if (identDBDATA.value) {
+      identDBDATA.value.forEach((k) => {
+        if (k.filter_division.trim() != "")
+          arrDivisions.value.push(k.filter_division.trim());
+      });
+      eventsPanelReady.value = true;
+    }
+  };
+
   return {
     saveMetarsDB,
     loadIdentDataAPI,
@@ -173,6 +187,7 @@ export const useVatinfoStore = defineStore("vatinfo", (router) => {
     removeMetar,
     updateArrMetars,
     updateArrCIDS,
+    updateArrDivisions,
     ident,
     identDBDATA,
     isAuthenticated,
@@ -181,5 +196,6 @@ export const useVatinfoStore = defineStore("vatinfo", (router) => {
     arrDivisions,
     isLogout,
     mainIntervalHandler,
+    eventsPanelReady,
   };
 });

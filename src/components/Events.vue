@@ -4,22 +4,23 @@ import { date, QSpinnerHourglass, useQuasar } from "quasar";
 import PanelBar from "./PanelBar.vue";
 import { useVatinfoStore } from "src/stores/vatinfo-store";
 import appConfig from "src/config";
+import { storeToRefs } from 'pinia'
 
 const $q = useQuasar();
 const cfgStore = useVatinfoStore();
 const allEvents = inject('allEvents', []);
 const dlgFilter = ref(false);
-const filterStatus = computed(() => cfgStore.arrDivisions.length === 0 ? 'ALL' : cfgStore.arrDivisions.length)
+const filterStatus = computed(() => selectedDivisionsValues.value.length === 0 ? 'ALL' : selectedDivisionsValues.value.length)
 const listEvents = computed(() => {
   let result = allEvents.value.filter((e) => Math.abs(date.getDateDiff(Date.now(), e.start_time, "days")) <= selectEvents.value ? true : false)
   if (cfgStore.arrDivisions.length != 0) {
-    result = result.filter(e => cfgStore.arrDivisions.includes(e.organisers[0].division))
+    result = result.filter(e => selectedDivisionsValues.value.includes(e.organisers[0].division))
   }
   return result;
 });
 const selectEvents = ref(0);
 const panelVisible = ref(true);
-const selectedDivisions = ref(null);
+const selectedDivisions = ref([]);
 const selectedDivisionsValues = computed(() => {
   let result = []
   selectedDivisions.value?.forEach(d => result.push(d.value));
@@ -35,7 +36,9 @@ const vatsimDivisionsArr = computed(() => {
 
 const loadDivisionsPanel = async () => {
   $q.loading.show({ message: "Loading your favorite Event divisions ...", spinner: QSpinnerHourglass })
+  selectedDivisions.value = [];
   await cfgStore.loadIdentDataAPI('events');
+  loadSelectedDivisions();
   $q.loading.hide();
 }
 const saveDivisionsPanel = async () => {
@@ -50,6 +53,19 @@ function eventAirports(e) {
   return airports;
 }
 
+const clickManage = () => {
+  dlgFilter.value = true;
+}
+
+const loadSelectedDivisions = () => {
+  cfgStore.arrDivisions.forEach(d => {
+    selectedDivisions.value.push({ value: d, label: appConfig.vatsimDivisions[d] })
+  })
+}
+onMounted(async () => {
+  loadSelectedDivisions();
+})
+
 </script>
 
 <template>
@@ -59,7 +75,7 @@ function eventAirports(e) {
         <span>
           <q-icon name="event" size="1.5rem" class="q-mr-sm q-mb-lg-none q-mb-sm" />Events <q-badge color="orange"
             class="q-mx-sm ">{{
-             listEvents.length
+                listEvents.length
             }}</q-badge>
         </span>
       </template>
@@ -74,9 +90,9 @@ function eventAirports(e) {
               ]" />
           </div>
           <div class="column col-12 col-lg-6 items-center">
-            <q-btn icon="filter_alt" size="sm" color="positive" @click="dlgFilter = true;">Filter<q-badge color="orange"
+            <q-btn icon="filter_alt" size="sm" color="positive" @click="clickManage()">Filter<q-badge color="orange"
                 class="q-mx-sm">
-                {{  filterStatus  }}</q-badge>
+                {{ filterStatus }}</q-badge>
             </q-btn>
           </div>
         </div>
@@ -102,19 +118,19 @@ function eventAirports(e) {
               <tbody>
                 <tr v-for="(e, index) in listEvents" :key="index">
                   <td class="text-left">
-                    <a class="link-no-decoration text-black" :href="e.link" target="_blank">{{  e.name  }}
-                      ({{  e.organisers[0].division  }})
+                    <a class="link-no-decoration text-black" :href="e.link" target="_blank">{{ e.name }}
+                      ({{ e.organisers[0].division }})
                       <q-icon name="open_in_new" />
                     </a>
                   </td>
-                  <td>{{  date.formatDate(new Date(e.start_time), "ddd DD/MM/YY HH:mm")  }}-{{  date.formatDate(new
-                  Date(e.end_time), "HH:mm")
+                  <td>{{ date.formatDate(new Date(e.start_time), "ddd DD/MM/YY HH:mm") }}-{{ date.formatDate(new
+                      Date(e.end_time), "HH:mm")
 
 
 
 
-                    }}</td>
-                  <td>{{  eventAirports(e)  }}</td>
+                  }}</td>
+                  <td>{{ eventAirports(e) }}</td>
                 </tr>
               </tbody>
             </q-markup-table>
