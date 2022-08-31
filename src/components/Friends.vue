@@ -16,7 +16,7 @@ const panelVisible = ref(true)
 
 const loadCID = async () => {
   $q.loading.show({ message: "Loading your favorite Pilots/Controllers ...", spinner: QSpinnerHourglass })
-  await cfgStore.loadIdentDataAPI('friends');
+  await cfgStore.loadIdentDataAPI('cids');
   await getOnlineCids();
   $q.loading.hide();
 }
@@ -48,7 +48,6 @@ async function formRemoveCID(toRemove = txtCID.value.toUpperCase()) {
   txtCID.value = ''
   await getOnlineCids();
 }
-
 
 const getOnlineCids = async () => {
   onlineCIDS.value = [];
@@ -131,7 +130,7 @@ defineExpose({ getOnlineCids });
 
   <q-dialog v-model="dlgManage" persistent transition-show="scale" transition-hide="scale">
     <q-card style="width:300px;">
-      <q-card-section class="bg-grey-3">
+      <q-card-section class="bg-primary text-white">
         <div>Manage CIDs to track Online Status</div>
       </q-card-section>
       <q-card-section class="q-pa-xs">
@@ -179,7 +178,7 @@ defineExpose({ getOnlineCids });
           </q-chip>
         </div>
       </q-card-section>
-      <q-card-actions align="right" class="positive text-teal bg-grey-3">
+      <q-card-actions align="right" class="positive text-white bg-primary">
         <q-btn flat label="Close" v-close-popup />
       </q-card-actions>
     </q-card>

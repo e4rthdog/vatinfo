@@ -2,12 +2,11 @@
 //FEATURE Add events filter by region (https://www.aviatorjoe.net/go/icao-nation-codes/)
 //FEATURE Dark mode
 //FEATURE MAP??
-//FEATURE Metar color accoridng to rules
 <template>
   <q-page class="q-ma-md">
     <div class="row">
       <div class="col-12 col-md-5 q-ma-sm">
-        <events ref="eventsRef"></events>
+        <events ref="eventsRef" v-if="cfgStore.eventsPanelReady"></events>
       </div>
       <div class="col-12 col-md-5 q-ma-sm">
         <metar ref="metarRef"></metar>

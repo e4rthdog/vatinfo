@@ -30,8 +30,16 @@ async function refreshAllMetars() {
   }
 }
 
-function updatePanel() {
-  getMetar().then((d) => { if (d.metar.trim() != '') cfgStore.arrMetars.push(d) });
+async function updatePanel() {
+  if (!cfgStore.arrMetars.find(m => m.icao.toUpperCase() === txtICAO.value.toUpperCase().trim())) {
+    await getMetar().then((d) => {
+      if (d.metar.trim() != '') cfgStore.$patch((state) => {
+        d.category = metarParser(d.metar).flight_category;
+        state.arrMetars.push(d);
+      })
+    });
+  }
+
   txtICAO.value = "";
 }
 
@@ -41,7 +49,7 @@ function clearMetars() {
 
 const loadMetars = async () => {
   $q.loading.show({ message: "Loading your favorite ICAOs ...", spinner: QSpinnerHourglass })
-  await cfgStore.loadIdentDataAPI();
+  await cfgStore.loadIdentDataAPI('metars');
   await refreshAllMetars();
   $q.loading.hide();
 }
@@ -53,7 +61,6 @@ const saveMetarsPanel = async () => {
 }
 
 onMounted(async () => {
-  watch(cfgStore.arrMetars, refreshAllMetars)
 });
 
 defineExpose({ refreshAllMetars })
@@ -75,7 +82,7 @@ defineExpose({ refreshAllMetars })
     <q-separator />
     <q-slide-transition>
       <div v-show="panelVisible">
-        <q-card-section>
+        <q-card-section class="q-pt-none">
           <div class="row items-center">
             <div class="col-12 col-lg-5">
               <q-input id="txtMetar" @keypress.enter="updatePanel()" color="positive" v-model.trim="txtICAO" dense
