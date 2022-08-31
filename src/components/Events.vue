@@ -13,7 +13,7 @@ const dlgFilter = ref(false);
 const filterStatus = computed(() => selectedDivisionsValues.value.length === 0 ? 'ALL' : selectedDivisionsValues.value.length)
 const listEvents = computed(() => {
   let result = allEvents.value.filter((e) => Math.abs(date.getDateDiff(Date.now(), e.start_time, "days")) <= selectEvents.value ? true : false)
-  if (cfgStore.arrDivisions.length != 0) {
+  if (selectedDivisionsValues.value.length != 0) {
     result = result.filter(e => selectedDivisionsValues.value.includes(e.organisers[0].division))
   }
   return result;
