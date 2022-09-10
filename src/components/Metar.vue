@@ -8,17 +8,26 @@ import metarParser from "aewx-metar-parser";
 
 const cfgStore = useVatinfoStore();
 const txtICAO = ref("");
-const arrMetarsSorted = computed(() => cfgStore.arrMetars.sort((a, b) => (a.icao > b.icao) ? 1 : -1));
+const arrMetarsSorted = computed(() =>
+  cfgStore.arrMetars.sort((a, b) => (a.icao > b.icao ? 1 : -1))
+);
 const $q = useQuasar();
-const panelVisible = ref(true)
+const panelVisible = ref(true);
 
 async function getMetar(icao = txtICAO.value.toUpperCase()) {
-  return await fetch(appConfig.metarURL + icao + '&nonce=' + date.formatDate(Date.now(), 'YYMMDDHHmmssSS'))
+  return await fetch(
+    appConfig.metarURL +
+      icao +
+      "&nonce=" +
+      date.formatDate(Date.now(), "YYMMDDHHmmssSS")
+  )
     .then((ret) => ret.text())
     .then((m) => {
       return { icao: icao, metar: m };
     })
-    .catch((error) => { console.log(`getMetar -> ${error}`) });
+    .catch((error) => {
+      console.log(`getMetar -> ${error}`);
+    });
 }
 
 async function refreshAllMetars() {
@@ -31,13 +40,23 @@ async function refreshAllMetars() {
 }
 
 async function updatePanel() {
-  if (!cfgStore.arrMetars.find(m => m.icao.toUpperCase() === txtICAO.value.toUpperCase().trim())) {
-    await getMetar().then((d) => {
-      if (d.metar.trim() != '') cfgStore.$patch((state) => {
-        d.category = metarParser(d.metar).flight_category;
-        state.arrMetars.push(d);
-      })
+  if (
+    !cfgStore.arrMetars.find(
+      (m) => m.icao.toUpperCase() === txtICAO.value.toUpperCase().trim()
+    )
+  ) {
+    $q.loading.show({
+      message: `Fetching metar for ${txtICAO.value.toUpperCase().trim()}`,
+      spinner: QSpinnerHourglass,
     });
+    await getMetar().then((d) => {
+      if (d.metar.trim() != "")
+        cfgStore.$patch((state) => {
+          d.category = metarParser(d.metar).flight_category;
+          state.arrMetars.push(d);
+        });
+    });
+    $q.loading.hide();
   }
 
   txtICAO.value = "";
@@ -48,22 +67,27 @@ function clearMetars() {
 }
 
 const loadMetars = async () => {
-  $q.loading.show({ message: "Loading your favorite ICAOs ...", spinner: QSpinnerHourglass })
-  await cfgStore.loadIdentDataAPI('metars');
+  $q.loading.show({
+    message: "Loading your favorite ICAOs ...",
+    spinner: QSpinnerHourglass,
+  });
+  await cfgStore.loadIdentDataAPI("metars");
   await refreshAllMetars();
   $q.loading.hide();
-}
+};
 
 const saveMetarsPanel = async () => {
-  $q.loading.show({ message: "Saving you favorite ICAOs ...", spinner: QSpinnerHourglass })
-  await cfgStore.saveMetarsDB(cfgStore.arrMetars)
+  $q.loading.show({
+    message: "Saving you favorite ICAOs ...",
+    spinner: QSpinnerHourglass,
+  });
+  await cfgStore.saveMetarsDB(cfgStore.arrMetars);
   $q.loading.hide();
-}
+};
 
-onMounted(async () => {
-});
+onMounted(async () => {});
 
-defineExpose({ refreshAllMetars })
+defineExpose({ refreshAllMetars });
 </script>
 
 <template>
@@ -75,8 +99,14 @@ defineExpose({ refreshAllMetars })
         </span>
       </template>
       <template #window-control>
-        <q-toggle v-model="panelVisible" label="" checked-icon="visibility" unchecked-icon="visibility_off"
-          color="positive" class="float-right" />
+        <q-toggle
+          v-model="panelVisible"
+          label=""
+          checked-icon="visibility"
+          unchecked-icon="visibility_off"
+          color="positive"
+          class="float-right"
+        />
       </template>
     </PanelBar>
     <q-separator />
@@ -85,8 +115,14 @@ defineExpose({ refreshAllMetars })
         <q-card-section class="q-pt-none">
           <div class="row items-center">
             <div class="col-12 col-lg-5">
-              <q-input id="txtMetar" @keypress.enter="updatePanel()" color="positive" v-model.trim="txtICAO" dense
-                label="Airport ICAO">
+              <q-input
+                id="txtMetar"
+                @keypress.enter="updatePanel()"
+                color="positive"
+                v-model.trim="txtICAO"
+                dense
+                label="Airport ICAO"
+              >
                 <template v-slot:prepend>
                   <q-icon name="flight_takeoff" />
                 </template>
@@ -94,9 +130,24 @@ defineExpose({ refreshAllMetars })
             </div>
             <div class="col-12 col-lg-7">
               <q-btn-group push :stretch="false" class="q-ma-md">
-                <q-btn @click="updatePanel()" label="Get it" color="primary" class="footer-text" />
-                <q-btn @click="refreshAllMetars()" label="Refresh" color="info" class="footer-text" />
-                <q-btn @click="clearMetars()" label="Clear" color="negative" class="footer-text" />
+                <q-btn
+                  @click="updatePanel()"
+                  label="Get it"
+                  color="primary"
+                  class="footer-text"
+                />
+                <q-btn
+                  @click="refreshAllMetars()"
+                  label="Refresh"
+                  color="info"
+                  class="footer-text"
+                />
+                <q-btn
+                  @click="clearMetars()"
+                  label="Clear"
+                  color="negative"
+                  class="footer-text"
+                />
                 <q-btn-dropdown color="primary" icon="save" class="footer-text">
                   <q-list>
                     <q-item clickable v-close-popup @click="loadMetars()">
@@ -115,9 +166,15 @@ defineExpose({ refreshAllMetars })
               </q-btn-group>
             </div>
           </div>
-          <div class="row bg-yellow-1 q-mt-md" style="font-size:0.8rem;">
+          <div class="row bg-yellow-1 q-mt-md" style="font-size: 0.8rem">
             <div class="col-12">
-              <q-markup-table bordered dense flat wrap-cells class="full-width text-left e4-panel-table-sm">
+              <q-markup-table
+                bordered
+                dense
+                flat
+                wrap-cells
+                class="full-width text-left e4-panel-table-sm"
+              >
                 <thead class="bg-grey-1">
                   <tr>
                     <th>METAR</th>
@@ -126,14 +183,23 @@ defineExpose({ refreshAllMetars })
                 <tbody>
                   <tr v-for="(m, index) in arrMetarsSorted" :key="index">
                     <td>
-                      <q-badge v-if="m.metar != ''" class="q-pa-xs" :color="appConfig.metarCategory[m.category]">{{
-                          m.category
-                      }}
+                      <q-badge
+                        v-if="m.metar != ''"
+                        class="q-pa-xs"
+                        :color="appConfig.metarCategory[m.category]"
+                        >{{ m.category }}
                       </q-badge>
                       {{ m.metar }}
                       <q-badge text-color="white" class="transparent">
-                        <q-btn v-if="m.metar != ''" dense color="negative" size="0.4rem" icon="clear" class="q-mx-none"
-                          @click="cfgStore.removeMetar(m.icao)" />
+                        <q-btn
+                          v-if="m.metar != ''"
+                          dense
+                          color="negative"
+                          size="0.4rem"
+                          icon="clear"
+                          class="q-mx-none"
+                          @click="cfgStore.removeMetar(m.icao)"
+                        />
                       </q-badge>
                     </td>
                   </tr>
