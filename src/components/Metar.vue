@@ -46,7 +46,7 @@ async function updatePanel() {
     )
   ) {
     $q.loading.show({
-      message: `Fetching metar for ${txtICAO.value.toUpperCase().trim()}`,
+      message: `Fetching metar: ${txtICAO.value.toUpperCase().trim()}`,
       spinner: QSpinnerHourglass,
     });
     await getMetar().then((d) => {
