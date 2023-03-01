@@ -1,1 +1,1 @@
-export const versionObj= { version:'v1.0.0-5-gfbb4409'};
+export const versionObj= { version:'v1.0.0-6-gfd5d5cc'};
