@@ -1,7 +1,8 @@
 <template>
-  <q-layout view="hHh lpR fFf">
+  <q-layout view="hHh LpR fFf">
     <q-header elevated class="bg-primary text-white shadow-5" height-hint="98">
       <div class="row items-center justify-around">
+        <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
         <div class="col-12 col-sm-5 text-center">
           <h1 class="text-weight-400 text-h5 q-ma-none">VATINFO Panels</h1>
         </div>
@@ -68,6 +69,7 @@ import { useVatinfoStore } from "src/stores/vatinfo-store";
 import { useRouter } from "vue-router";
 import { versionObj } from "../../public/version";
 
+const drawer = ref(false);
 const router = useRouter();
 const cfgStore = useVatinfoStore();
 const currentUTCTime = ref();
