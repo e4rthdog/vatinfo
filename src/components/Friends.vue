@@ -59,6 +59,9 @@ const getOnlineCids = async () => {
   onlineCIDS.value = [];
   cfgStore.arrCIDS.forEach((cid) => {
     let results = allClients.value.filter((client) => {
+      client.time_online_minutes = calculateTimeDifferenceInMinutesFromCurrent(
+        client.time_logon
+      );
       if (client.clienttype === "ATC") {
         return client.callsign.startsWith(cid) || client.cid === cid;
       } else {
@@ -148,7 +151,7 @@ defineExpose({ getOnlineCids });
                     `${f.time_logon.slice(8, 10)}:${f.time_logon.slice(
                       10,
                       12
-                    )}z`
+                    )}z / (${f.time_online_minutes}\')`
                   "
                 ></td>
               </tr>
