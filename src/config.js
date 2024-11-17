@@ -1,13 +1,17 @@
 const appConfig = {
-  eventsURL: "https://vatboard.estassinos.com/getevents.php",
-  metarURL: "https://vatboard.estassinos.com/getmetar.php?icao=",
-  atcURL: "https://vatboard.estassinos.com/getdata.php?type=ATC",
-  pilotsURL: "https://vatboard.estassinos.com/getdata.php?type=PILOT",
-  cidURL: "https://vatboard.estassinos.com/getdata.php?type=CID",
-  infoURL: "https://vatboard.estassinos.com/getdata.php?type=INFO",
-  serversURL: "https://vatboard.estassinos.com/getdata.php?type=SERVERS",
-  callsignURL: "https://vatboard.estassinos.com/getdata.php?type=CALLSIGN&q=",
-  clientsURL: "https://vatboard.estassinos.com/getdata.php?type=ALL",
+  eventsURL: "https://apps.estassinos.com/api/vatinfo-api/getevents.php",
+  metarURL: "https://apps.estassinos.com/api/vatinfo-api/getmetar.php?icao=",
+  atcURL: "https://apps.estassinos.com/api/vatinfo-api/getdata.php?type=ATC",
+  pilotsURL:
+    "https://apps.estassinos.com/api/vatinfo-api/getdata.php?type=PILOT",
+  cidURL: "https://apps.estassinos.com/api/vatinfo-api/getdata.php?type=CID",
+  infoURL: "https://apps.estassinos.com/api/vatinfo-api/getdata.php?type=INFO",
+  serversURL:
+    "https://apps.estassinos.com/api/vatinfo-api/getdata.php?type=SERVERS",
+  callsignURL:
+    "https://apps.estassinos.com/api/vatinfo-api/getdata.php?type=CALLSIGN&q=",
+  clientsURL:
+    "https://apps.estassinos.com/api/vatinfo-api/getdata.php?type=ALL",
   apiURL: "https://apps.estassinos.com/api/vatinfo-api",
   status: {
     PILOT: "flight",
