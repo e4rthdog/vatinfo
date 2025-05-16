@@ -1,7 +1,3 @@
-//FIXME Uncaught (in promise) TypeError: Cannot read properties of null (reading 'getOnlineCids')
-//FEATURE Add events filter by region (https://www.aviatorjoe.net/go/icao-nation-codes/)
-//FEATURE Dark mode
-//FEATURE MAP??
 <template>
   <q-page class="q-ma-md">
     <div class="row">
@@ -32,12 +28,12 @@ import { inject, ref, onMounted, provide } from "vue";
 import Events from "components/Events.vue";
 import Friends from "components/Friends.vue";
 import Metar from "components/Metar.vue";
-import Info from "components/Info.vue"
+import Info from "components/Info.vue";
 import { useVatinfoStore } from "src/stores/vatinfo-store";
 import appConfig from "src/config";
 
 const cfgStore = useVatinfoStore();
-const updateRefreshTime = inject('updateRefreshTime')
+const updateRefreshTime = inject("updateRefreshTime");
 const $q = useQuasar();
 const eventsRef = ref();
 const friendsRef = ref();
@@ -46,41 +42,69 @@ const infoRef = ref();
 const allClients = ref([]);
 const allEvents = ref([]);
 
-provide('updateData', updateData);
-provide('allClients', allClients)
-provide('getEvents', getEvents)
-provide('allEvents', allEvents)
+provide("updateData", updateData);
+provide("allClients", allClients);
+provide("getEvents", getEvents);
+provide("allEvents", allEvents);
 
 async function updateData() {
-  $q.loading.show({ message: "Fetching Events,CIDs ...", spinner: QSpinnerHourglass })
-  await getClients();
-  await getEvents();
-  await friendsRef.value.getOnlineCids();
-  $q.loading.show({ message: "Refreshing METARs ...", spinner: QSpinnerHourglass })
-  await metarRef.value.refreshAllMetars();
-  $q.loading.show({ message: "Refreshing INFO ...", spinner: QSpinnerHourglass })
-  $q.loading.hide();
-  updateRefreshTime();
+  try {
+    $q.loading.show({
+      message: "Fetching Events,CIDs ...",
+      spinner: QSpinnerHourglass,
+    });
+    await getClients();
+    await getEvents();
+    await friendsRef.value?.getOnlineCids();
+
+    $q.loading.show({
+      message: "Refreshing METARs ...",
+      spinner: QSpinnerHourglass,
+    });
+    await metarRef.value?.refreshAllMetars();
+
+    $q.loading.show({
+      message: "Refreshing INFO ...",
+      spinner: QSpinnerHourglass,
+    });
+  } catch (error) {
+    console.error("Update failed:", error);
+  } finally {
+    $q.loading.hide();
+    updateRefreshTime();
+  }
 }
 
 async function getClients() {
-  await fetch(appConfig.clientsURL + '&' + date.formatDate(Date.now(), 'YYMMDDHHmmssSS'))
+  await fetch(
+    appConfig.clientsURL + "&" + date.formatDate(Date.now(), "YYMMDDHHmmssSS")
+  )
     .then((ret) => ret.json())
-    .then((m) => allClients.value = m)
-    .catch((error) => { console.log(`getClients -> ${error}`) });
+    .then((m) => (allClients.value = m))
+    .catch((error) => {
+      console.log(`getClients -> ${error}`);
+    });
 }
 
 async function getEvents() {
-  await fetch(appConfig.eventsURL + '?nonce=' + date.formatDate(Date.now(), 'YYMMDDHHmmssSS'))
+  await fetch(
+    appConfig.eventsURL +
+      "?nonce=" +
+      date.formatDate(Date.now(), "YYMMDDHHmmssSS")
+  )
     .then((ret) => ret.json())
-    .then((json) => allEvents.value = json.data)
-    .catch((error) => { console.log(`getEvents -> ${error}`) });
+    .then((json) => (allEvents.value = json.data))
+    .catch((error) => {
+      console.log(`getEvents -> ${error}`);
+    });
 }
 onMounted(async () => {
   await updateData();
-  cfgStore.mainIntervalHandler = setInterval(updateData, appConfig.refreshInterval);
+  cfgStore.mainIntervalHandler = setInterval(
+    updateData,
+    appConfig.refreshInterval
+  );
 });
 
 defineExpose({ updateData });
-
 </script>
