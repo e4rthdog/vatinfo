@@ -15,27 +15,50 @@ const $q = useQuasar();
 const panelVisible = ref(true);
 
 async function getMetar(icao = txtICAO.value.toUpperCase()) {
-  return await fetch(
-    appConfig.metarURL +
-      icao +
-      "&nonce=" +
-      date.formatDate(Date.now(), "YYMMDDHHmmssSS")
-  )
-    .then((ret) => ret.text())
-    .then((m) => {
-      return { icao: icao, metar: m };
-    })
-    .catch((error) => {
-      console.log(`getMetar -> ${error}`);
-    });
+  try {
+    const response = await fetch(
+      appConfig.metarURL +
+        icao +
+        "&nonce=" +
+        date.formatDate(Date.now(), "YYMMDDHHmmssSS")
+    );
+    const data = await response.text();
+
+    // Add validation for empty/invalid response
+    if (!data || data.trim() === "") {
+      return { icao: icao, metar: "", category: "" };
+    }
+
+    return { icao: icao, metar: data };
+  } catch (error) {
+    console.error(`getMetar error for ${icao}:`, error);
+    return { icao: icao, metar: "", category: "" };
+  }
 }
 
 async function refreshAllMetars() {
-  for await (const m of cfgStore.arrMetars) {
-    await getMetar(m.icao).then((d) => {
-      m.metar = d.metar;
-      m.category = metarParser(d.metar).flight_category;
-    });
+  try {
+    for await (const m of cfgStore.arrMetars) {
+      const data = await getMetar(m.icao);
+      m.metar = data.metar;
+
+      // Only try parsing if we have METAR data
+      if (data.metar) {
+        try {
+          m.category = metarParser(data.metar).flight_category;
+        } catch (parseError) {
+          console.warn(`Failed to parse METAR for ${m.icao}:`, parseError);
+          m.category = "";
+        }
+      } else {
+        m.category = "";
+      }
+    }
+  } catch (error) {
+    console.error("refreshAllMetars error:", error);
+  } finally {
+    // Make sure loading indicator is hidden
+    $q.loading.hide();
   }
 }
 
