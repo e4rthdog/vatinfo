@@ -9,7 +9,7 @@
 - The application will be written with VUE framework. Use all the best practices from VUE. Use Composition API and VUE 3.
 - Use Pinia for state management.
 - Use official VUE documentation for all the VUE features.
-- Use official TAILWIND documentation for all the TAILWIND features.
+- Use official QUASAR Framework documentation for all the QUUASAR Framework features.
 - When providing code examples:
   - Show only key snippets that illustrate core concepts (5-15 lines maximum)
   - Focus on architecture and patterns rather than full implementations, unless asked
