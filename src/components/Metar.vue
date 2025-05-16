@@ -16,23 +16,56 @@ const panelVisible = ref(true);
 
 async function getMetar(icao = txtICAO.value.toUpperCase()) {
   try {
+    // Input validation
+    if (!icao || icao.length < 4) {
+      throw new Error("Invalid ICAO code");
+    }
+
     const response = await fetch(
       appConfig.metarURL +
         icao +
         "&nonce=" +
         date.formatDate(Date.now(), "YYMMDDHHmmssSS")
     );
-    const data = await response.text();
 
-    // Add validation for empty/invalid response
-    if (!data || data.trim() === "") {
-      return { icao: icao, metar: "", category: "" };
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    return { icao: icao, metar: data };
+    const data = await response.text();
+
+    if (!data || data.trim() === "") {
+      throw new Error("No METAR data available");
+    }
+
+    let result = { icao, metar: data };
+
+    try {
+      result.category = metarParser(data).flight_category;
+    } catch (parseError) {
+      result.category = "";
+      console.warn("METAR parse error:", parseError);
+    }
+
+    return {
+      icao,
+      metar: data,
+      category: result.category || "",
+      success: true,
+    };
   } catch (error) {
-    console.error(`getMetar error for ${icao}:`, error);
-    return { icao: icao, metar: "", category: "" };
+    console.error(`METAR error for ${icao}:`, error);
+    $q.notify({
+      type: "negative",
+      message: error.message,
+    });
+    return {
+      icao,
+      metar: "",
+      category: "",
+      success: false,
+      error: error.message,
+    };
   }
 }
 
@@ -63,26 +96,30 @@ async function refreshAllMetars() {
 }
 
 async function updatePanel() {
-  if (
-    !cfgStore.arrMetars.find(
-      (m) => m.icao.toUpperCase() === txtICAO.value.toUpperCase().trim()
-    )
-  ) {
+  try {
+    const icao = txtICAO.value.toUpperCase().trim();
+
+    if (cfgStore.arrMetars.find((m) => m.icao === icao)) {
+      $q.notify({ type: "warning", message: "ICAO already exists" });
+      return;
+    }
+
     $q.loading.show({
-      message: `Fetching metar: ${txtICAO.value.toUpperCase().trim()}`,
+      message: `Fetching metar: ${icao}`,
       spinner: QSpinnerHourglass,
     });
-    await getMetar().then((d) => {
-      if (d.metar.trim() != "")
-        cfgStore.$patch((state) => {
-          d.category = metarParser(d.metar).flight_category;
-          state.arrMetars.push(d);
-        });
-    });
-    $q.loading.hide();
-  }
 
-  txtICAO.value = "";
+    const result = await getMetar();
+
+    if (result.success && result.metar) {
+      cfgStore.$patch((state) => {
+        state.arrMetars.push(result);
+      });
+    }
+  } finally {
+    $q.loading.hide();
+    txtICAO.value = "";
+  }
 }
 
 function clearMetars() {
